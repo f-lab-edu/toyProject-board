@@ -11,6 +11,7 @@ public class Reply {
         return replyId;
     }
 
+
     public void setReplyId(String replyId) {
         this.replyId = replyId;
     }
