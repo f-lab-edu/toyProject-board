@@ -33,6 +33,7 @@ public class Reply {
         this.boardId = boardId;
     }
 
+
     public String getRegDt() {
         return regDt;
     }
