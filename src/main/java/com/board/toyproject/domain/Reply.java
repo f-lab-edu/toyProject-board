@@ -24,6 +24,7 @@ public class Reply {
         this.memberId = memberId;
     }
 
+
     public String getBoardId() {
         return boardId;
     }
