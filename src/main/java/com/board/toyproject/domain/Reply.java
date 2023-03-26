@@ -34,6 +34,7 @@ public class Reply {
     }
 
 
+
     public String getRegDt() {
         return regDt;
     }
