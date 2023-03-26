@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.toyproject.repository.MybatisBoardRepository">
+    <select id="getListBoard" resultType="com.board.toyproject.domain.Board">
+        SELECT board_id, member_id, title, reg_dt, content
+        FROM board;
+    </select>
+</mapper>
+    
+    
+
+        
+        
