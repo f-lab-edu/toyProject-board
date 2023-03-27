@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.toyproject.repository.MybatisMemberRepository">
+    <insert id="saveMember">
+        insert into member (member_id, name, phone_num, reg_dt)
+        values (#{memberId},#{name},#{phoneNum}, now())
+    </insert>
+    <select id="findAll" resultType="com.board.toyproject.domain.Member">
+        SELECT member_id, name, phone_num, reg_dt
+        FROM member
+    </select>
+    <select id="findById" resultType="com.board.toyproject.domain.Member">
+        SELECT member_id, name, phone_num, reg_dt
+        FROM member
+        where member_id = #{memberId}
+    </select>
+    <select id="findByName" resultType="com.board.toyproject.domain.Member">
+        SELECT member_id, name, phone_num, reg_dt
+        FROM member
+        where name = #{name}
+    </select>
+
+
+    <!--
+        UPDATE boardDB.`member`
+        SET name='', phone_num=''
+        WHERE member_id='';
+
+        DELETE FROM boardDB.`member`
+        WHERE member_id='';-->
+
+
+</mapper>
+
+
+
+

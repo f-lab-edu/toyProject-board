@@ -1,16 +1,25 @@
 package com.board.toyproject.domain;
 
 public class Member {
-    String member_id;
+    String memberId;
     String name;
-    String phone_num;
+    String phoneNum;
+    String regDt;
 
-    public String getMember_id() {
-        return member_id;
+    public String getRegDt() {
+        return regDt;
     }
 
-    public void setMember_id(String member_id) {
-        this.member_id = member_id;
+    public void setRegDt(String regDt) {
+        this.regDt = regDt;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public String getName() {
@@ -21,11 +30,14 @@ public class Member {
         this.name = name;
     }
 
-    public String getPhone_num() {
-        return phone_num;
+    public String getPhoneNum() {
+        return phoneNum;
     }
 
-    public void setPhone_num(String phone_num) {
-        this.phone_num = phone_num;
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
+
+
+
 }

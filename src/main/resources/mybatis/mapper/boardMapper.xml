@@ -5,6 +5,7 @@
         SELECT board_id, member_id, title, reg_dt, content
         FROM board;
     </select>
+
 </mapper>
     
     
