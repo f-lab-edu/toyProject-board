@@ -6,6 +6,16 @@ public class Member {
     String phoneNum;
     String regDt;
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId='" + memberId + '\'' +
+                ", name='" + name + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", regDt='" + regDt + '\'' +
+                '}';
+    }
+
     public String getRegDt() {
         return regDt;
     }

@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.toyproject.repository.MybatisMemberRepository">
+    <resultMap id="memberMap" type="com.board.toyproject.domain.Member">
+        <result property="memberId" column="member_id"/>
+        <result property="name"     column="name"/>
+        <result property="phoneNum" column="phone_num"/>
+        <result property="regDt"    column="reg_dt"/>
+    </resultMap>
     <insert id="saveMember">
         insert into member (member_id, name, phone_num, reg_dt)
         values (#{memberId},#{name},#{phoneNum}, now())
     </insert>
-    <select id="findAll" resultType="com.board.toyproject.domain.Member">
+    <select id="findAll" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
         SELECT member_id, name, phone_num, reg_dt
         FROM member
     </select>
-    <select id="findById" resultType="com.board.toyproject.domain.Member">
+    <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
         SELECT member_id, name, phone_num, reg_dt
         FROM member
         where member_id = #{memberId}
     </select>
-    <select id="findByName" resultType="com.board.toyproject.domain.Member">
+    <select id="findByName" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
         SELECT member_id, name, phone_num, reg_dt
         FROM member
         where name = #{name}
