@@ -4,6 +4,7 @@ import com.board.toyproject.domain.Member;
 import com.board.toyproject.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 public class MemberService {
@@ -13,26 +14,43 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public String join(Member member){
+    public String join(Member member) {
         memberRepository.saveMember(member);
         return member.getMemberId();
     }
 
     /**
      * id로 멤버 검색
+     *
      * @param memberId
      * @return
      */
-    public Optional<Member> findByMemberId (String memberId){
+    public Optional<Member> findByMemberId(String memberId) {
         return memberRepository.findById(memberId);
     }
 
     /**
      * 이름으로 멤버 검색
+     *
      * @param name
      * @return
      */
-    public Optional<Member> findByMemberName(String name){
+    public Optional<Member> findByMemberName(String name) {
         return memberRepository.findByName(name);
+    }
+
+    public List<Member> findAllMember() {
+        return memberRepository.findAll();
+    }
+
+    //멤버 수정
+    public String updateMember(Member member) {
+        memberRepository.updateMember(member);
+        return member.getMemberId();
+    }
+    //멤버 탈퇴
+    public String deleteMember(Member member){
+        memberRepository.deleteMember(member);
+        return member.getMemberId();
     }
 }

@@ -25,15 +25,17 @@
         FROM member
         where name = #{name}
     </select>
+    <update id="updateMember" >
+        UPDATE MEMBER
+        SET  name=coalesce(#{name},name), phone_num=coalesce(#{phoneNum},phone_num)
+        where member_id = #{memberId}
+    </update>
+    <delete id="deleteMember" >
+        DELETE MEMBER
+        FROM member
+        where member_id = #{memberId}
+    </delete>
 
-
-    <!--
-        UPDATE boardDB.`member`
-        SET name='', phone_num=''
-        WHERE member_id='';
-
-        DELETE FROM boardDB.`member`
-        WHERE member_id='';-->
 
 
 </mapper>
