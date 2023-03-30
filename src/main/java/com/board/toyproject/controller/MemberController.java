@@ -30,9 +30,13 @@ public class MemberController {
     @ResponseBody
     public Map<String, Object> createMember(@RequestBody Member member) {
         System.out.println("member = " + member);
-        memberService.join(member);
         Map<String, Object> resultMap = new HashMap<>();
+        if(memberService.chkDupMemberId(member)){ //ID로 중복 체크
+            resultMap.put("result", "already joined");
+            return resultMap;
+        }
         resultMap.put("result", "added");
+        memberService.join(member);
         return resultMap;
     }
 

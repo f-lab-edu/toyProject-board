@@ -53,4 +53,12 @@ public class MemberService {
         memberRepository.deleteMember(member);
         return member.getMemberId();
     }
+    public boolean chkDupMemberId(Member member){
+        /*if(memberRepository.findById(member.getMemberId()) !=null){
+            return true;
+        }else{
+            return false;
+        }*/
+        return false;
+    }
 }
