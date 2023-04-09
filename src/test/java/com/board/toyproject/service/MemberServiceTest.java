@@ -30,4 +30,8 @@ class MemberServiceTest {
         Assertions.assertThat(member.getMemberId()).isEqualTo(findMember.getMemberId());
 
     }
+    @Test
+    public void test(){
+
+    }
 }
