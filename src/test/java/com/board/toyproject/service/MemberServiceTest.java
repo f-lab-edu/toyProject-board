@@ -32,7 +32,7 @@ class MemberServiceTest {
     }
     @Test
     public void test(){
-        System.out.println("pull request test");
+        System.out.println("pull request test2");
 
     }
 }
