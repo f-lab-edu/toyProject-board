@@ -32,6 +32,6 @@ class MemberServiceTest {
     }
     @Test
     public void test(){
-        System.out.println("pull request test2");
+        System.out.println("pull request test3");
     }
 }
