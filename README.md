@@ -10,13 +10,16 @@
 
 작성중..
 
+### 기능
 
-###기능
-```text
+
 1. 멤버
     (1) Create member
+    <img width="489" alt="image" src="https://user-images.githubusercontent.com/31380511/231800627-908a4944-124b-4ec4-b759-06fb03946e6c.png">
     
     (2) Read member
+    <img width="440" alt="image" src="https://user-images.githubusercontent.com/31380511/231800993-26f27b54-b664-4a5e-8519-84b0e894d989.png">
+
     
     (3) Update member
     
