@@ -45,6 +45,7 @@ public class MemberService {
 
     //멤버 수정
     public String updateMember(Member member) {
+
         memberRepository.updateMember(member);
         return member.getMemberId();
     }
@@ -54,11 +55,10 @@ public class MemberService {
         return member.getMemberId();
     }
     public boolean chkDupMemberId(Member member){
-        /*if(memberRepository.findById(member.getMemberId()) !=null){
+        if(memberRepository.findById(member.getMemberId()).isPresent()){
             return true;
         }else{
             return false;
-        }*/
-        return false;
+        }
     }
 }

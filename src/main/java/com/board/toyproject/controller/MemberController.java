@@ -26,7 +26,6 @@ public class MemberController {
     @RequestMapping(value = "/create_member", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public Map<String, Object> createMember(@RequestBody Member member) {
-        System.out.println("member = " + member);
         Map<String, Object> resultMap = new HashMap<>();
         if(memberService.chkDupMemberId(member)){ //ID로 중복 체크
             resultMap.put("result", "already joined");
@@ -82,11 +81,14 @@ public class MemberController {
     @RequestMapping(value = "/updateMember", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public Map<String, Object> updateMember(@RequestBody Member member) {
-        System.out.println("member = " + member);
         Map<String, Object> resultMap = new HashMap<>();
         if (member == null) {
             resultMap.put("result", "멤버 정보를 입력하세요.");
         }else{
+            if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
+                resultMap.put("result", "수정하려는 아이디가 존재하지 않습니다.");
+            }
+
             String memberId=memberService.updateMember(member);
             resultMap.put("result", memberId+" updated");
         }
@@ -100,9 +102,15 @@ public class MemberController {
     @RequestMapping(value = "/deleteMember", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public Map<String, Object> deleteMember(@RequestBody Member member) {
-        System.out.println("member = " + member);
-        String memberId=memberService.deleteMember(member);
         Map<String, Object> resultMap = new HashMap<>();
+
+        if (member == null) {
+            resultMap.put("result", "멤버 정보를 입력하세요.");
+        }
+        if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
+            resultMap.put("result", "삭제하려는 아이디가 존재하지 않습니다.");
+        }
+        String memberId=memberService.deleteMember(member);
         resultMap.put("result", memberId+" deleted");
         return resultMap;
     }
