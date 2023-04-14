@@ -24,7 +24,6 @@ public class MemberController {
     //--------------------예외처리를 다룹니다.-------------------------//
 
 
-
     //404 error 처리
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
