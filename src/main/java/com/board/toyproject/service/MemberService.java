@@ -2,9 +2,12 @@ package com.board.toyproject.service;
 
 import com.board.toyproject.domain.Member;
 import com.board.toyproject.repository.MemberRepository;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class MemberService {
@@ -15,6 +18,7 @@ public class MemberService {
     }
 
     public String join(Member member) {
+
         memberRepository.saveMember(member);
         return member.getMemberId();
     }
@@ -25,8 +29,9 @@ public class MemberService {
      * @param memberId
      * @return
      */
-    public Optional<Member> findByMemberId(String memberId) {
-        return memberRepository.findById(memberId);
+    public Optional<Member> findByMemberId(String memberId){
+        return Optional.of(memberRepository.findById(memberId).orElseThrow(() ->
+                new NoSuchElementException("해당하는 member를 찾을 수 없습니다.")));
     }
 
     /**
@@ -35,7 +40,7 @@ public class MemberService {
      * @param name
      * @return
      */
-    public Optional<Member> findByMemberName(String name) {
+    public List<Member> findByMemberName(String name) {
         return memberRepository.findByName(name);
     }
 
@@ -54,7 +59,7 @@ public class MemberService {
         memberRepository.deleteMember(member);
         return member.getMemberId();
     }
-    public boolean chkDupMemberId(Member member){
+    public boolean chkDuplicateMemberId(Member member){
         if(memberRepository.findById(member.getMemberId()).isPresent()){
             return true;
         }else{
