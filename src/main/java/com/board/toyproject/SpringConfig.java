@@ -3,6 +3,7 @@ package com.board.toyproject;
 import com.board.toyproject.repository.MemberRepository;
 import com.board.toyproject.repository.MybatisMemberRepository;
 import com.board.toyproject.service.MemberService;
+import com.board.toyproject.service.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,6 @@ public class SpringConfig {
 
     @Bean
     public MemberService memberService(){
-        return new MemberService(memberRepository);
+        return new MemberServiceImpl(memberRepository);
     }
 }
