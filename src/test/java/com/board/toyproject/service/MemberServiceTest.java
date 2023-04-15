@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,10 +36,8 @@ class MemberServiceTest {
         memberService.join(member);
         //then
         Member findMember = memberService.findByMemberId(member.getMemberId()).get();
-        Member findMember2 = memberService.findByMemberName(member.getName()).get();
 
         assertThat(member.getMemberId()).isEqualTo(findMember.getMemberId());
-        assertThat(member.getName()).isEqualTo(findMember2.getName());
 
     }
     @Test
