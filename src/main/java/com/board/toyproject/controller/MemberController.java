@@ -45,7 +45,7 @@ public class MemberController {
     @ResponseBody
     public Member requestMemberById(@RequestParam(value = "memberId",required = false) String memberId){
         Member member = memberService.findByMemberId(memberId).orElse(null);
-        System.out.println("member = " + member);
+
         return member;
     }
 
@@ -58,7 +58,7 @@ public class MemberController {
     @ResponseBody
     public Member requestMemberByName(@RequestParam(value = "name",required = false) String name){
         Member member = memberService.findByMemberName(name).orElse(null);
-        System.out.println("member = " + member);
+
         return member;
     }
 
