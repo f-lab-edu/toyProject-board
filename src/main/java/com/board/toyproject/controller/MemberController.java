@@ -1,16 +1,21 @@
 package com.board.toyproject.controller;
 
+import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Member;
 import com.board.toyproject.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.*;
 
-@Controller
+@RestController
+@RequestMapping(value = "/members")
 public class MemberController {
-
 
     private final MemberService memberService;
     @Autowired
@@ -18,92 +23,86 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+
     /**
      * 회원가입
      * @param member
      * @return
      */
-    @RequestMapping(value = "/create_member", method = {RequestMethod.GET, RequestMethod.POST})
+
+    @PostMapping
     @ResponseBody
-    public Map<String, Object> createMember(@RequestBody Member member) {
-        System.out.println("member = " + member);
-        Map<String, Object> resultMap = new HashMap<>();
-        if(memberService.chkDupMemberId(member)){ //ID로 중복 체크
-            resultMap.put("result", "already joined");
-            return resultMap;
+    public Member createMember(@RequestBody Member member) {
+
+        if(memberService.isDuplicatedMemberId(member)){ //ID로 중복 체크
+            throw new DuplicateKeyException("이미 가입한 회원입니다.");
         }
-        resultMap.put("result", "added");
         memberService.join(member);
-        return resultMap;
+        Member result = memberService.findByMemberId(member.getMemberId()).get();
+        return result;
     }
 
     /**
-     * 아이디로 멤버 찾기
+     * 멤버 찾기
      * @param memberId
      * @return
      */
-    @GetMapping("/requestMemberById")
+    @GetMapping
+    //@PostMapping
     @ResponseBody
-    public Member requestMemberById(@RequestParam(value = "memberId",required = false) String memberId){
-        Member member = memberService.findByMemberId(memberId).orElse(null);
-        System.out.println("member = " + member);
-        return member;
+    public List<Member> requestMemberById(@RequestParam(value = "memberId", required = false) String memberId
+                                    ,@RequestParam(value = "name", required = false) String name){
+        List<Member> members = new ArrayList<>();
+        if(memberId !=null){
+            Member member = memberService.findByMemberId(memberId).orElse(null);
+            members.add(member);
+        }else if(name !=null){
+
+            members = memberService.findByMemberName(name);
+        }else{
+            members = memberService.findAllMember();
+        }
+
+        return members;
     }
 
-    /**
-     * 이름으로 멤버 찾기
-     * @param name
-     * @return
-     */
-    @GetMapping("/requestMemberByName")
-    @ResponseBody
-    public Member requestMemberByName(@RequestParam(value = "name",required = false) String name){
-        Member member = memberService.findByMemberName(name).orElse(null);
-        System.out.println("member = " + member);
-        return member;
-    }
-
-    /**
-     * 모든 멤버 조회하기
-     * @return
-     */
-    @GetMapping("/requestMemberAll")
-    @ResponseBody
-    public List<Member> requestUserAll(){
-        List<Member> memberList = memberService.findAllMember();
-        return memberList;
-    }
 
     /**
      * 멤버 정보 수정
      * @param member
      * @return
      */
-    @RequestMapping(value = "/updateMember", method = {RequestMethod.GET, RequestMethod.POST})
+    @PutMapping
     @ResponseBody
-    public Map<String, Object> updateMember(@RequestBody Member member) {
-        System.out.println("member = " + member);
-        Map<String, Object> resultMap = new HashMap<>();
+    public Member updateMember(@RequestBody (required=false) Member member) {
+        //Map<String, Object> resultMap = new HashMap<>();
         if (member == null) {
-            resultMap.put("result", "멤버 정보를 입력하세요.");
+            throw new BadRequestException("수정하려는 멤버정보를 입력해주세요.");
         }else{
-            String memberId=memberService.updateMember(member);
-            resultMap.put("result", memberId+" updated");
+            if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
+                throw new NoSuchElementException("수정하려는 아이디가 존재하지 않습니다.");
+            }
+
+            String memberId = memberService.updateMember(member);
+            Member result = memberService.findByMemberId(memberId).get();
+            return result;
         }
-        return resultMap;
     }
     /**
      * 멤버 탈퇴
      * @param member
      * @return
      */
-    @RequestMapping(value = "/deleteMember", method = {RequestMethod.GET, RequestMethod.POST})
+    @DeleteMapping
     @ResponseBody
-    public Map<String, Object> deleteMember(@RequestBody Member member) {
-        System.out.println("member = " + member);
-        String memberId=memberService.deleteMember(member);
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("result", memberId+" deleted");
-        return resultMap;
+    public String deleteMember(@RequestBody (required=false) Member member) {
+        if (member == null) {
+            throw new BadRequestException("삭제하려는 멤버정보를 입력해주세요.");
+        }
+        if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
+            throw new NoSuchElementException("삭제하려는 아이디가 존재하지 않습니다.");
+        }
+        String memberId = memberService.deleteMember(member);
+        return "delete member";
     }
 }

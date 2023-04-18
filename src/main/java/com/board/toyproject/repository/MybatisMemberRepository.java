@@ -16,7 +16,7 @@ public interface MybatisMemberRepository extends MemberRepository {
     Optional<Member> findById(String memberId);
 
     @Override
-    Optional<Member> findByName(String name);
+    List<Member> findByName(String name);
 
     @Override
     List<Member> findAll();
