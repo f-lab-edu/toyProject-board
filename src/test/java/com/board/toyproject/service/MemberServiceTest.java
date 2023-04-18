@@ -5,6 +5,7 @@ import com.board.toyproject.domain.Member;
 import com.board.toyproject.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional //테스트를 시작할 때 트랜잭션 시작하고 테스트 끝나면 롤백해줌.
 class MemberServiceTest {
 
-    @Autowired MemberService memberService;
+    @Autowired
+    MemberService memberService;
 
     @Test
-    void 회원가입() {
+    @DisplayName("회원가입 테스트")
+    void memberJoin() {
         //given
         Member member = new Member();
         member.setMemberId("testId123");
@@ -38,10 +41,25 @@ class MemberServiceTest {
         Member findMember = memberService.findByMemberId(member.getMemberId()).get();
 
         assertThat(member.getMemberId()).isEqualTo(findMember.getMemberId());
+    }
+
+    @Test
+    @DisplayName("중복가입 테스트")
+    void memberDuplicateJoin(){
+        //given
+        Member member = new Member("test11", "유연");
+        memberService.join(member);
+        Member member2 = new Member("test11", "유연중복");
+
+        //when
+        memberService.join(member2);
+        //then
+
 
     }
+
     @Test
-    void 회원수정(){
+    void memberUpdate() {
         //given
         Member member = new Member();
         member.setMemberId("testId123");
@@ -57,8 +75,9 @@ class MemberServiceTest {
         //then
         assertThat("이름수정합니다").isEqualTo(updateMember.getName());
     }
+
     @Test
-    void 회원탈퇴테스트(){
+    void memberDelete() {
         //given
         Member member = new Member();
         member.setMemberId("testId123");
@@ -74,7 +93,7 @@ class MemberServiceTest {
         //Member removeMember = memberService.findByMemberId("testId123").get();
         //NoSuchElementException
         assertThrows(NoSuchElementException.class,
-                ()->  memberService.findByMemberId("testId123").get());
+                () -> memberService.findByMemberId("testId123").get());
         //assertThat("이름수정합니다").isEqualTo(updateMember.getName());
     }
 }
