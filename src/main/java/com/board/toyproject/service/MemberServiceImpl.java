@@ -2,6 +2,7 @@ package com.board.toyproject.service;
 
 import com.board.toyproject.domain.Member;
 import com.board.toyproject.repository.MemberRepository;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,7 +16,9 @@ public class MemberServiceImpl implements MemberService{
     }
 
     public String join(Member member) {
-
+        if(isDuplicatedMemberId(member)){ //ID로 중복 체크
+            throw new DuplicateKeyException("이미 가입한 회원입니다.");
+        }
         memberRepository.saveMember(member);
         return member.getMemberId();
     }

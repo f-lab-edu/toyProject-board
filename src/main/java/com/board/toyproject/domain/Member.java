@@ -1,8 +1,18 @@
 package com.board.toyproject.domain;
 
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Member {
+    @NonNull
     String memberId;
+    @NonNull
     String name;
+
     String phoneNum;
     String regDt;
 
@@ -15,39 +25,6 @@ public class Member {
                 ", regDt='" + regDt + '\'' +
                 '}';
     }
-
-    public String getRegDt() {
-        return regDt;
-    }
-
-    public void setRegDt(String regDt) {
-        this.regDt = regDt;
-    }
-
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
-
 
 
 }

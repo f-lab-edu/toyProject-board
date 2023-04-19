@@ -14,7 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "/members")
+@RequestMapping(value = "/board/v1/member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -41,28 +41,48 @@ public class MemberController {
         Member result = memberService.findByMemberId(member.getMemberId()).get();
         return result;
     }
-
     /**
-     * 멤버 찾기
-     * @param memberId
+     * 모든 멤버 찾기
      * @return
      */
     @GetMapping
     //@PostMapping
     @ResponseBody
-    public List<Member> requestMemberById(@RequestParam(value = "memberId", required = false) String memberId
-                                    ,@RequestParam(value = "name", required = false) String name){
-        List<Member> members = new ArrayList<>();
-        if(memberId !=null){
-            Member member = memberService.findByMemberId(memberId).orElse(null);
-            members.add(member);
-        }else if(name !=null){
-
-            members = memberService.findByMemberName(name);
-        }else{
-            members = memberService.findAllMember();
+    public List<Member> requestMemberAll(){
+        List<Member> members = memberService.findAllMember();
+        return members;
+    }
+    /**
+     * 이름으로 멤버 찾기
+     * @param name
+     * @return
+     */
+    @GetMapping("/name/{name}")
+    //@PostMapping
+    @ResponseBody
+    public List<Member> requestMemberByName(@PathVariable String name){
+        List<Member> members = memberService.findByMemberName(name);
+        if(members.size()==0){
+            throw new NoSuchElementException("이름이 '"+name+"' 멤버는 존재하지 않습니다.");
         }
+        return members;
+    }
 
+    /**
+     * 아이디로 멤버 찾기
+     * @param memberId
+     * @return
+     */
+    @GetMapping("/memberId/{memberId}")
+    //@PostMapping
+    @ResponseBody
+    public List<Member> requestMemberById(@PathVariable String memberId){
+        List<Member> members = new ArrayList<>();
+        Member member = memberService.findByMemberId(memberId).orElse(null);
+        if(member==null){
+            throw new NoSuchElementException("아이디가 '"+memberId+"' 멤버는 존재하지 않습니다.");
+        }
+        members.add(member);
         return members;
     }
 
@@ -74,19 +94,16 @@ public class MemberController {
      */
     @PutMapping
     @ResponseBody
-    public Member updateMember(@RequestBody (required=false) Member member) {
-        //Map<String, Object> resultMap = new HashMap<>();
-        if (member == null) {
-            throw new BadRequestException("수정하려는 멤버정보를 입력해주세요.");
-        }else{
-            if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
-                throw new NoSuchElementException("수정하려는 아이디가 존재하지 않습니다.");
-            }
+    public Member updateMember(@RequestBody (required=true) Member member) {
 
-            String memberId = memberService.updateMember(member);
-            Member result = memberService.findByMemberId(memberId).get();
-            return result;
+        if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
+            throw new NoSuchElementException("수정하려는 아이디가 존재하지 않습니다.");
         }
+
+        String memberId = memberService.updateMember(member);
+        Member result = memberService.findByMemberId(memberId).get();
+        return result;
+
     }
     /**
      * 멤버 탈퇴
@@ -95,10 +112,8 @@ public class MemberController {
      */
     @DeleteMapping
     @ResponseBody
-    public String deleteMember(@RequestBody (required=false) Member member) {
-        if (member == null) {
-            throw new BadRequestException("삭제하려는 멤버정보를 입력해주세요.");
-        }
+    public String deleteMember(@RequestBody (required=true) Member member) {
+
         if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
             throw new NoSuchElementException("삭제하려는 아이디가 존재하지 않습니다.");
         }
