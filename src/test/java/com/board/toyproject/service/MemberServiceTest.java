@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -54,7 +55,7 @@ class MemberServiceTest {
         //when
         memberService.join(member2);
         //then
-
+        assertThrows(memberService.join(member2), ()-> DuplicateKeyException)
 
     }
 

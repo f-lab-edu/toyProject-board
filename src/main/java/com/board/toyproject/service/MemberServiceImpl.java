@@ -59,7 +59,7 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.deleteMember(member);
         return member.getMemberId();
     }
-    public boolean isDuplicatedMemberId(Member member){
+    private boolean isDuplicatedMemberId(Member member){
         if(memberRepository.findById(member.getMemberId()).isPresent()){
             return true;
         }else{

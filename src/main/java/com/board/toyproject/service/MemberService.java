@@ -12,6 +12,5 @@ public interface MemberService {
     List<Member> findAllMember();
     String updateMember(Member member);
     String deleteMember(Member member);
-    boolean isDuplicatedMemberId(Member member);
 
 }

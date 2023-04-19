@@ -34,9 +34,6 @@ public class MemberController {
     @ResponseBody
     public Member createMember(@RequestBody Member member) {
 
-        if(memberService.isDuplicatedMemberId(member)){ //ID로 중복 체크
-            throw new DuplicateKeyException("이미 가입한 회원입니다.");
-        }
         memberService.join(member);
         Member result = memberService.findByMemberId(member.getMemberId()).get();
         return result;
