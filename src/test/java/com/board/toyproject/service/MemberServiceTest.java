@@ -53,9 +53,9 @@ class MemberServiceTest {
         Member member2 = new Member("test11", "유연중복");
 
         //when
-        memberService.join(member2);
+        //memberService.join(member2);
         //then
-        assertThrows(memberService.join(member2), ()-> DuplicateKeyException)
+        assertThrows(DuplicateKeyException.class, ()->  memberService.join(member2));
 
     }
 

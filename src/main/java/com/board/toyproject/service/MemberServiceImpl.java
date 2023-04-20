@@ -2,11 +2,14 @@ package com.board.toyproject.service;
 
 import com.board.toyproject.domain.Member;
 import com.board.toyproject.repository.MemberRepository;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;

@@ -8,17 +8,19 @@ import java.util.Optional;
 
 @Mapper
 public interface MybatisBoardRepository extends BoardRepository{
+
+
     @Override
     int saveBoard(Board board);
 
     @Override
-    Optional<Board> findBoardByBoardId();
+    Optional<Board> findBoardByBoardId(String board_id);
 
     @Override
-    List<Board> findBoardByMemberId();
+    List<Board> findBoardByMemberId(String member_id);
 
     @Override
-    List<Board> findBoardByTitle();
+    List<Board> findBoardByTitle(String title);
 
     @Override
     List<Board> findAll();
@@ -28,5 +30,4 @@ public interface MybatisBoardRepository extends BoardRepository{
 
     @Override
     int updateBoard(Board board);
-
 }

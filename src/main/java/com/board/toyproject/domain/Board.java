@@ -9,8 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class Board {
 
-    @NonNull
-    String boardId;
+    int boardId;
     @NonNull
     String memberId;
     @NonNull
@@ -18,6 +17,5 @@ public class Board {
     String regDt;
     String modDt;
     String content;
-
 
 }
