@@ -14,7 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "/board/v1/member")
+@RequestMapping(value = "/board/v1/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -31,7 +31,6 @@ public class MemberController {
      */
 
     @PostMapping
-    @ResponseBody
     public Member createMember(@RequestBody Member member) {
 
         memberService.join(member);
@@ -43,8 +42,6 @@ public class MemberController {
      * @return
      */
     @GetMapping
-    //@PostMapping
-    @ResponseBody
     public List<Member> requestMemberAll(){
         List<Member> members = memberService.findAllMember();
         return members;
@@ -55,8 +52,6 @@ public class MemberController {
      * @return
      */
     @GetMapping("/name/{name}")
-    //@PostMapping
-    @ResponseBody
     public List<Member> requestMemberByName(@PathVariable String name){
         List<Member> members = memberService.findByMemberName(name);
         if(members.size()==0){
@@ -71,8 +66,6 @@ public class MemberController {
      * @return
      */
     @GetMapping("/memberId/{memberId}")
-    //@PostMapping
-    @ResponseBody
     public List<Member> requestMemberById(@PathVariable String memberId){
         List<Member> members = new ArrayList<>();
         Member member = memberService.findByMemberId(memberId).orElse(null);
@@ -89,8 +82,7 @@ public class MemberController {
      * @param member
      * @return
      */
-    @PutMapping
-    @ResponseBody
+    @PatchMapping
     public Member updateMember(@RequestBody (required=true) Member member) {
 
         if(!memberService.findByMemberId(member.getMemberId()).isPresent()){
@@ -108,7 +100,6 @@ public class MemberController {
      * @return
      */
     @DeleteMapping
-    @ResponseBody
     public String deleteMember(@RequestBody (required=true) Member member) {
 
         if(!memberService.findByMemberId(member.getMemberId()).isPresent()){

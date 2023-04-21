@@ -25,12 +25,12 @@
     <select id="findBoardByMemberId" resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
         select board_id, member_id, title, reg_dt, content, mod_dt
         from board
-        where member_id=#{memberId}
+        where member_id like '%${memberId}%'
     </select>
     <select id="findBoardByTitle" resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
         select board_id, member_id, title, reg_dt, content, mod_dt
         from board
-        where title=#{title}
+        where title like '%${title}%'
     </select>
     <update id="updateBoard" >
         UPDATE board

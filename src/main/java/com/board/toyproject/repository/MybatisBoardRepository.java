@@ -14,7 +14,7 @@ public interface MybatisBoardRepository extends BoardRepository{
     int saveBoard(Board board);
 
     @Override
-    Optional<Board> findBoardByBoardId(String board_id);
+    Optional<Board> findBoardByBoardId(int board_id);
 
     @Override
     List<Board> findBoardByMemberId(String member_id);

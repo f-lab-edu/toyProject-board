@@ -7,10 +7,10 @@ import java.util.Optional;
 
 public interface BoardService {
     int writeBoard(Board board);
-    Optional<Board> findBoardByBoardId(String board_id);
+    Optional<Board> findBoardByBoardId(int board_id);
     List<Board> findBoardByMemberId(String member_id);
     List<Board> findBoardByTitle(String title);
     List<Board> findAll();
-    int updateMember(Board board);
-    int deleteMember(Board board);
+    int updateBoard(Board board);
+    int deleteBoard(Board board);
 }

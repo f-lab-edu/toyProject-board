@@ -9,7 +9,7 @@ public interface BoardRepository {
 
     int saveBoard(Board board);
 
-    Optional<Board> findBoardByBoardId(String board_id);
+    Optional<Board> findBoardByBoardId(int board_id);
 
     List<Board> findBoardByMemberId(String member_id);
 

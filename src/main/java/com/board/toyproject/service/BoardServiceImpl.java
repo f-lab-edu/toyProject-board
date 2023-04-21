@@ -20,7 +20,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Optional<Board> findBoardByBoardId(String board_id) {
+    public Optional<Board> findBoardByBoardId(int board_id) {
         return Optional.of(boardRepository.findBoardByBoardId(board_id).orElseThrow(()->
                     new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다.")));
     }
@@ -41,12 +41,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int updateMember(Board board) {
+    public int updateBoard(Board board) {
         return boardRepository.updateBoard(board);
     }
 
     @Override
-    public int deleteMember(Board board) {
+    public int deleteBoard(Board board) {
         return boardRepository.deleteBoard(board);
     }
 }
