@@ -11,7 +11,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
+
     private final MemberRepository memberRepository;
 
     public MemberServiceImpl(MemberRepository memberRepository) {
@@ -19,7 +20,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     public String join(Member member) {
-        if(isDuplicatedMemberId(member)){ //ID로 중복 체크
+        if (isDuplicatedMemberId(member)) { //ID로 중복 체크
             throw new DuplicateKeyException("이미 가입한 회원입니다.");
         }
         memberRepository.saveMember(member);
@@ -32,7 +33,7 @@ public class MemberServiceImpl implements MemberService{
      * @param memberId
      * @return
      */
-    public Optional<Member> findByMemberId(String memberId){
+    public Optional<Member> findByMemberId(String memberId) {
         return Optional.of(memberRepository.findById(memberId).orElseThrow(() ->
                 new NoSuchElementException("해당하는 member를 찾을 수 없습니다.")));
     }
@@ -57,16 +58,14 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.updateMember(member);
         return member.getMemberId();
     }
+
     //멤버 탈퇴
-    public String deleteMember(Member member){
+    public String deleteMember(Member member) {
         memberRepository.deleteMember(member);
         return member.getMemberId();
     }
-    private boolean isDuplicatedMemberId(Member member){
-        if(memberRepository.findById(member.getMemberId()).isPresent()){
-            return true;
-        }else{
-            return false;
-        }
+
+    private boolean isDuplicatedMemberId(Member member) {
+        return memberRepository.findById(member.getMemberId()).isPresent();
     }
 }

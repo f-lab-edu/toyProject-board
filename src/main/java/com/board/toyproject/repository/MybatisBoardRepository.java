@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mapper
-public interface MybatisBoardRepository extends BoardRepository{
+public interface MybatisBoardRepository extends BoardRepository {
 
 
     @Override

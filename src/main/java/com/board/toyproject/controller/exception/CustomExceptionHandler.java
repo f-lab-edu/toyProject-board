@@ -23,7 +23,8 @@ public class CustomExceptionHandler {
     //400 error 처리
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+    public ResponseEntity<String> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
@@ -34,12 +35,14 @@ public class CustomExceptionHandler {
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
+
     //409 error 처리
     @ExceptionHandler(DuplicateKeyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<String> handleDupException(DuplicateKeyException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
+
     //500 error 처리
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

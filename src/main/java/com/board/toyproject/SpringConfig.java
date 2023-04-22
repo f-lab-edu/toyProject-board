@@ -19,17 +19,18 @@ public class SpringConfig {
     private final BoardRepository boardRepository;
 
     @Autowired
-    public SpringConfig(MemberRepository memberRepository, BoardRepository boardRepository){
+    public SpringConfig(MemberRepository memberRepository, BoardRepository boardRepository) {
         this.memberRepository = memberRepository;
         this.boardRepository = boardRepository;
     }
 
     @Bean
-    public MemberService memberService(){
+    public MemberService memberService() {
         return new MemberServiceImpl(memberRepository);
     }
+
     @Bean
-    public BoardService boardService(){
+    public BoardService boardService() {
         return new BoardServiceImpl(boardRepository);
     }
 }

@@ -45,7 +45,7 @@ class BoardServiceImplTest {
 
     @Test
     @DisplayName("게시판 아이디로 게시물 찾기")
-    public void findBoardByBoardId(){
+    public void findBoardByBoardId() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
@@ -60,16 +60,18 @@ class BoardServiceImplTest {
 
     @Test
     @DisplayName("게시판 아이디로 게시물 찾는데, 없을 때 오류")
-    public void findBoardByBoardIdThrowException(){
+    public void findBoardByBoardIdThrowException() {
         //given
-        int missingNumber =-1;
+        int missingNumber = -1;
         //when
         //then
-        assertThrows(NoSuchElementException.class,()->boardService.findBoardByBoardId(missingNumber).get());
+        assertThrows(NoSuchElementException.class,
+                () -> boardService.findBoardByBoardId(missingNumber).get());
     }
+
     @Test
     @DisplayName("멤버아이디로 게시물 리스트 찾기")
-    public void findBoardByMemberId(){
+    public void findBoardByMemberId() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
@@ -89,7 +91,7 @@ class BoardServiceImplTest {
 
     @Test
     @DisplayName("제목으로 게시물들 찾기.")
-    public void findBoardByTitle(){
+    public void findBoardByTitle() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
@@ -109,7 +111,7 @@ class BoardServiceImplTest {
 
     @Test
     @DisplayName("모든 게시물 찾기")
-    public void findAll(){
+    public void findAll() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
@@ -126,9 +128,10 @@ class BoardServiceImplTest {
         //then
         assertThat(boardList.size()).isEqualTo(4);
     }
+
     @Test
     @DisplayName("게시판 수정")
-    public void updateBoard(){
+    public void updateBoard() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
@@ -143,9 +146,10 @@ class BoardServiceImplTest {
         //then
         assertThat(afterBoard.getContent()).isEqualTo("내용after");
     }
+
     @Test
     @DisplayName("게시판 삭제")
-    public void deleteBoard(){
+    public void deleteBoard() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
@@ -157,7 +161,8 @@ class BoardServiceImplTest {
         //when
         boardService.deleteBoard(board);
         //then
-        assertThrows(NoSuchElementException.class,()->boardService.findBoardByBoardId(board.getBoardId()).get());
+        assertThrows(NoSuchElementException.class,
+                () -> boardService.findBoardByBoardId(board.getBoardId()).get());
     }
 
 

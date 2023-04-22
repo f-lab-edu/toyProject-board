@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor //final 생성자 자동 생성
 public class BoardServiceImpl implements BoardService {
+
     private final BoardRepository boardRepository;
 
     @Override
@@ -21,8 +22,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Optional<Board> findBoardByBoardId(int board_id) {
-        return Optional.of(boardRepository.findBoardByBoardId(board_id).orElseThrow(()->
-                    new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다.")));
+        return Optional.of(boardRepository.findBoardByBoardId(board_id).orElseThrow(() ->
+                new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다.")));
     }
 
     @Override

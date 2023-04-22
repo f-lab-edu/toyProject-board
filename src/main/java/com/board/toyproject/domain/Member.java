@@ -8,6 +8,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Member {
+
     @NonNull
     String memberId;
     @NonNull
