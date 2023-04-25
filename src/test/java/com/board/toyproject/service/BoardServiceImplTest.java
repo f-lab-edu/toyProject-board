@@ -1,20 +1,17 @@
 package com.board.toyproject.service;
 
-import com.board.toyproject.SpringConfig;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import com.board.toyproject.domain.RequestDTO;
+import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,9 +35,10 @@ class BoardServiceImplTest {
         Board board = new Board(member.getMemberId(), "타이틀테스트");
         board.setContent("내용넣기");
         //when
-        int save = boardService.writeBoard(board);
+        Board newBoard = boardService.writeBoard(board);
+
         //then
-        assertThat(save).isEqualTo(1);
+        assertThat(board.getBoardId()).isEqualTo(newBoard.getBoardId());
     }
 
     @Test
@@ -53,7 +51,7 @@ class BoardServiceImplTest {
         boardService.writeBoard(board);
         int boardId = board.getBoardId();
         //when
-        Board getBoard = boardService.findBoardByBoardId(boardId).get();
+        Board getBoard = boardService.findBoardByBoardId(boardId);
         //then
         assertThat(getBoard.getBoardId()).isEqualTo(boardId);
     }
@@ -66,7 +64,7 @@ class BoardServiceImplTest {
         //when
         //then
         assertThrows(NoSuchElementException.class,
-                () -> boardService.findBoardByBoardId(missingNumber).get());
+                () -> boardService.findBoardByBoardId(missingNumber));
     }
 
     @Test
@@ -102,11 +100,36 @@ class BoardServiceImplTest {
         Board board3 = new Board(member.getMemberId(), "이지후게시판");
         boardService.writeBoard(board3);
 
+        //RequestDTO 생성
+        RequestDTO requestDTO = new RequestDTO(1,20,"title","배유연");
+
         //when
-        List<Board> boardList = boardService.findBoardByTitle("배유연게시판");
+        PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
 
         //then
-        assertThat(boardList.size()).isEqualTo(2);
+        assertThat(boardList.getSize()).isEqualTo(2);
+    }
+    @Test
+    @DisplayName("검색타입으로 없는 타입 넣기")
+    public void findBoardByNoType() {
+        //given
+        Member member = new Member("test11", "유연");
+        memberService.join(member);
+        Board board = new Board(member.getMemberId(), "배유연게시판");
+        boardService.writeBoard(board);
+        Board board2 = new Board(member.getMemberId(), "배유연게시판2");
+        boardService.writeBoard(board2);
+        Board board3 = new Board(member.getMemberId(), "이지후게시판");
+        boardService.writeBoard(board3);
+
+        //RequestDTO 생성
+        RequestDTO requestDTO = new RequestDTO(1,20,"이상한타입","배유연");
+
+        //when
+        PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
+
+        //then
+        assertThat(boardList.getSize()).isEqualTo(2);
     }
 
     @Test
@@ -123,6 +146,7 @@ class BoardServiceImplTest {
         boardService.writeBoard(board3);
         Board board4 = new Board(member.getMemberId(), "배유연게시판4");
         boardService.writeBoard(board4);
+
         //when
         List<Board> boardList = boardService.findAll();
         //then
@@ -142,7 +166,7 @@ class BoardServiceImplTest {
         //when
         board.setContent("내용after");
         boardService.updateBoard(board);
-        Board afterBoard = boardService.findBoardByBoardId(board.getBoardId()).get();
+        Board afterBoard = boardService.findBoardByBoardId(board.getBoardId());
         //then
         assertThat(afterBoard.getContent()).isEqualTo("내용after");
     }
@@ -156,13 +180,13 @@ class BoardServiceImplTest {
         Board board = new Board(member.getMemberId(), "타이틀테스트");
 
         boardService.writeBoard(board);
-        Board getBoard = boardService.findBoardByBoardId(board.getBoardId()).get();
+        Board getBoard = boardService.findBoardByBoardId(board.getBoardId());
         assertThat(getBoard.getBoardId()).isEqualTo(board.getBoardId());
         //when
         boardService.deleteBoard(board);
         //then
         assertThrows(NoSuchElementException.class,
-                () -> boardService.findBoardByBoardId(board.getBoardId()).get());
+                () -> boardService.findBoardByBoardId(board.getBoardId()));
     }
 
 

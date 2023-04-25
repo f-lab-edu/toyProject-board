@@ -1,6 +1,7 @@
 package com.board.toyproject.repository;
 
 import com.board.toyproject.domain.Board;
+import com.board.toyproject.domain.RequestDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,7 +21,8 @@ public interface MybatisBoardRepository extends BoardRepository {
     List<Board> findBoardByMemberId(String member_id);
 
     @Override
-    List<Board> findBoardByTitle(String title);
+    List<Board> findBoardBySearchWord(RequestDTO requestDTO);
+    //List<Board> findBoardByTitle(String title);
 
     @Override
     List<Board> findAll();

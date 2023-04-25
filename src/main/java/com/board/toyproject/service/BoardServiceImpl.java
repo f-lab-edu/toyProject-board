@@ -1,6 +1,7 @@
 package com.board.toyproject.service;
 
 import com.board.toyproject.domain.Board;
+import com.board.toyproject.domain.RequestDTO;
 import com.board.toyproject.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,15 +16,15 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
-    public int writeBoard(Board board) {
-        int saveData = boardRepository.saveBoard(board);
-        return saveData;
+    public Board writeBoard(Board board) {
+        boardRepository.saveBoard(board);
+        return board;
     }
 
     @Override
-    public Optional<Board> findBoardByBoardId(int board_id) {
-        return Optional.of(boardRepository.findBoardByBoardId(board_id).orElseThrow(() ->
-                new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다.")));
+    public Board findBoardByBoardId(int board_id) {
+        return boardRepository.findBoardByBoardId(board_id).orElseThrow(() ->
+                new NoSuchElementException("게시판 아이디가 '"+board_id+"'인 게시물을 찾을 수 없습니다."));
     }
 
     @Override
@@ -32,8 +33,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> findBoardByTitle(String title) {
-        return boardRepository.findBoardByTitle(title);
+    public List<Board> findBoardBySearchWord(RequestDTO requestDTO){
+        return boardRepository.findBoardBySearchWord(requestDTO);
     }
 
     @Override
