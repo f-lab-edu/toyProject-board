@@ -111,6 +111,7 @@ class BoardServiceImplTest {
 
 
 
+
         //then
         assertThat(boardList.getSize()).isEqualTo(2);
     }
