@@ -105,6 +105,7 @@ class BoardServiceImplTest {
         //RequestDTO 생성
         RequestDTO requestDTO = new RequestDTO(1,20, "TITLE", "배유연");
 
+
         //when
         PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
 
