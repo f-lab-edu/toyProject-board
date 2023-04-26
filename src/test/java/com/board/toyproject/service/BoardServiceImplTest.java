@@ -1,8 +1,10 @@
 package com.board.toyproject.service;
 
+import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
 import com.board.toyproject.domain.RequestDTO;
+import com.board.toyproject.domain.RequestType;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -101,7 +103,7 @@ class BoardServiceImplTest {
         boardService.writeBoard(board3);
 
         //RequestDTO 생성
-        RequestDTO requestDTO = new RequestDTO(1,20,"title","배유연");
+        RequestDTO requestDTO = new RequestDTO(1,20, "TITLE", "배유연");
 
         //when
         PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
@@ -123,13 +125,14 @@ class BoardServiceImplTest {
         boardService.writeBoard(board3);
 
         //RequestDTO 생성
-        RequestDTO requestDTO = new RequestDTO(1,20,"이상한타입","배유연");
+        RequestDTO requestDTO = new RequestDTO(1,20,"NULLTYPE","배유연");
 
         //when
-        PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
+        //PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
 
         //then
-        assertThat(boardList.getSize()).isEqualTo(2);
+        assertThrows(BadRequestException.class,
+                () -> PageInfo.of(boardService.findBoardBySearchWord(requestDTO)));
     }
 
     @Test

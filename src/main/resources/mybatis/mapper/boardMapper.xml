@@ -41,7 +41,7 @@
     WHERE 1=1
     <if test="searchType neq null and searchType neq ''">
       <choose>
-        <when test="searchType eq 'title'.toString()">
+        <when test="searchType eq 'TITLE'.toString()">
           <if test="searchContent eq null and searchContent eq '' ">
             AND TITLE LIKE ''
           </if>
@@ -49,7 +49,7 @@
             and TITLE LIKE '%${searchContent}%'
           </if>
         </when>
-        <when test="searchType eq 'content'.toString()">
+        <when test="searchType eq 'CONTENT'.toString()">
           <if test="searchContent eq null and searchContent eq '' ">
             AND CONTENT LIKE ''
           </if>
