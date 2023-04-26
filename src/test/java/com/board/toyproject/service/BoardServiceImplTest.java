@@ -110,6 +110,7 @@ class BoardServiceImplTest {
         PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
 
 
+
         //then
         assertThat(boardList.getSize()).isEqualTo(2);
     }
