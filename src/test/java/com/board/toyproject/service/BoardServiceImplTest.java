@@ -92,6 +92,7 @@ class BoardServiceImplTest {
     @Test
     @DisplayName("제목으로 게시물들 찾기.")
     public void findBoardByTitle() {
+
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
