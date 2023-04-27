@@ -101,7 +101,6 @@ class BoardServiceImplTest {
         boardService.writeBoard(board2);
         Board board3 = new Board(member.getMemberId(), "이지후게시판");
         boardService.writeBoard(board3);
-
         //RequestDTO 생성
         RequestDTO requestDTO = new RequestDTO(1,20, "TITLE", "배유연");
         //when
