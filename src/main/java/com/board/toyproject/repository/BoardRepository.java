@@ -2,7 +2,8 @@ package com.board.toyproject.repository;
 
 import com.board.toyproject.domain.Board;
 
-import com.board.toyproject.domain.RequestDTO;
+import com.board.toyproject.domain.PagingResponseData;
+import com.board.toyproject.domain.RequestData;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,13 +13,12 @@ public interface BoardRepository {
 
     Optional<Board> findBoardByBoardId(int board_id);
 
-    List<Board> findBoardByMemberId(String member_id);
+    //List<Board> findBoardByMemberId(String member_id);
 
-    //List<Board> findBoardByTitle(String title);
-    List<Board> findBoardBySearchWord(RequestDTO requestDTO);
+    List<Board> findBoardBySearchWord(RequestData requestData);
 
-    List<Board> findAll();
 
+    int count(RequestData requestData);
     int deleteBoard(Board board);
 
     int updateBoard(Board board);

@@ -14,33 +14,38 @@
     INSERT INTO BOARD (MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT)
     VALUES (#{memberId}, #{title}, NOW(), #{content}, NOW())
   </insert>
-  <select id="findAll" resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
-    SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
-    FROM BOARD
-  </select>
+
   <select id="findBoardByBoardId" resultType="com.board.toyproject.domain.Board"
     resultMap="boardMap">
     SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
     FROM BOARD
     WHERE BOARD_ID=#{board_id}
   </select>
-  <select id="findBoardByMemberId" resultType="com.board.toyproject.domain.Board"
+  <!--<select id="findBoardByMemberId" resultType="com.board.toyproject.domain.Board"
     resultMap="boardMap">
     SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
     FROM BOARD
     WHERE MEMBER_ID LIKE '%${memberId}%'
-  </select>
+  </select>-->
   <!--<select id="findBoardByTitle" resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
     SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
     FROM BOARD
     WHERE TITLE LIKE '%${title}%'
   </select>-->
-  <select id="findBoardBySearchWord" parameterType="com.board.toyproject.domain.RequestDTO" resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
-    SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
+  <select id="count" parameterType="com.board.toyproject.domain.RequestData" resultType="int">
+    SELECT count(board_id)
     FROM BOARD
     WHERE 1=1
     <if test="searchType neq null and searchType neq ''">
       <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND MEMBER_ID LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            and MEMBER_ID LIKE '%${searchContent}%'
+          </if>
+        </when>
         <when test="searchType eq 'TITLE'.toString()">
           <if test="searchContent eq null and searchContent eq '' ">
             AND TITLE LIKE ''
@@ -59,6 +64,41 @@
         </when>
       </choose>
     </if>
+  </select>
+
+  <select id="findBoardBySearchWord" parameterType="com.board.toyproject.domain.RequestData" resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
+    SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
+    FROM BOARD
+    WHERE 1=1
+    <if test="searchType neq null and searchType neq ''">
+      <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND MEMBER_ID LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            and MEMBER_ID LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'TITLE'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND TITLE LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            and TITLE LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'CONTENT'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND CONTENT LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND CONTENT LIKE '%${searchContent}%'
+          </if>
+        </when>
+      </choose>
+    </if>
+    LIMIT #{pagination.limitStart}, #{recordSize}
   </select>
   <update id="updateBoard">
     UPDATE BOARD

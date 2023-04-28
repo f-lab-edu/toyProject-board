@@ -3,11 +3,13 @@ package com.board.toyproject.controller;
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Member;
 import com.board.toyproject.service.MemberService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -33,8 +35,10 @@ public class MemberController {
      */
 
     @PostMapping
-    public Member createMember(@RequestBody Member member) {
-
+    public Member createMember(@RequestBody @Valid Member member, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new BadRequestException(bindingResult.getAllErrors().toString());
+        }
         memberService.join(member);
         Member result = memberService.findByMemberId(member.getMemberId()).get();
         return result;

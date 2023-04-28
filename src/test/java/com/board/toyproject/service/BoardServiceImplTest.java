@@ -3,9 +3,8 @@ package com.board.toyproject.service;
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.RequestDTO;
-import com.board.toyproject.domain.RequestType;
-import com.github.pagehelper.PageInfo;
+import com.board.toyproject.domain.PagingResponseData;
+import com.board.toyproject.domain.RequestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,11 +81,15 @@ class BoardServiceImplTest {
         Board board3 = new Board(member.getMemberId(), "타이틀테스트3");
         boardService.writeBoard(board3);
 
+        RequestData requestData = new RequestData();
+        requestData.setSearchType("MEMBER_ID");
+        requestData.setSearchContent(member.getMemberId());
+
         //when
-        List<Board> boardList = boardService.findBoardByMemberId(member.getMemberId());
+        PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
 
         //then
-        assertThat(boardList.size()).isEqualTo(3);
+        assertThat(responseData.getList().size()).isEqualTo(3);
     }
 
     @Test
@@ -101,12 +104,17 @@ class BoardServiceImplTest {
         boardService.writeBoard(board2);
         Board board3 = new Board(member.getMemberId(), "이지후게시판");
         boardService.writeBoard(board3);
-        //RequestDTO 생성
-        RequestDTO requestDTO = new RequestDTO(1,20, "TITLE", "배유연");
+
+        //RequestData 생성
+        RequestData requestData = new RequestData();
+        requestData.setSearchType("TITLE");
+        requestData.setSearchContent("배유연");
+
         //when
-        PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
+        PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
+
         //then
-        assertThat(boardList.getSize()).isEqualTo(2);
+        assertThat(responseData.getList().size()).isEqualTo(2);
     }
     @Test
     @DisplayName("검색타입으로 없는 타입 넣기")
@@ -121,15 +129,17 @@ class BoardServiceImplTest {
         Board board3 = new Board(member.getMemberId(), "이지후게시판");
         boardService.writeBoard(board3);
 
-        //RequestDTO 생성
-        RequestDTO requestDTO = new RequestDTO(1,20,"NULLTYPE","배유연");
+        //RequestData 생성
+        RequestData requestData = new RequestData();
+        requestData.setSearchType("NON_DATA");
+        requestData.setSearchContent("배유연");
 
         //when
-        //PageInfo<Board> boardList = PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
+        //PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
 
         //then
         assertThrows(BadRequestException.class,
-                () -> PageInfo.of(boardService.findBoardBySearchWord(requestDTO)));
+                () -> boardService.findBoardBySearchWord(requestData));
     }
 
     @Test
@@ -147,10 +157,15 @@ class BoardServiceImplTest {
         Board board4 = new Board(member.getMemberId(), "배유연게시판4");
         boardService.writeBoard(board4);
 
+
+        //RequestData 생성
+        RequestData requestData = new RequestData();
+
         //when
-        List<Board> boardList = boardService.findAll();
+        PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
+
         //then
-        assertThat(boardList.size()).isEqualTo(4);
+        assertThat(responseData.getList().size()).isEqualTo(4);
     }
 
     @Test

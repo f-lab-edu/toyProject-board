@@ -1,17 +1,21 @@
 package com.board.toyproject.controller;
 
+import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.RequestDTO;
+import com.board.toyproject.domain.PagingResponseData;
+import com.board.toyproject.domain.RequestData;
+import com.board.toyproject.domain.RequestType;
 import com.board.toyproject.service.BoardService;
 import com.board.toyproject.service.MemberService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -29,7 +33,10 @@ public class BoardController {
      * @return
      */
     @PostMapping
-    public Board createBoard(@RequestBody Board board) {
+    public Board createBoard(@RequestBody @Valid Board board, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            throw new BadRequestException(bindingResult.getAllErrors().toString());
+        }
         boardService.writeBoard(board);
         return board;
     }
@@ -46,62 +53,22 @@ public class BoardController {
     }
 
     /**
-     * 회원아이디로 게시물 조회
-     *
-     * @param memberId
-     * @return
-     */
-    @GetMapping("/memberId/{memberId}")
-    public PageInfo<Board> requestBoardByMemberId(@PathVariable String memberId,
-            RequestDTO requestDTO) {
-
-        Member member = memberService.findByMemberId(memberId).orElse(null);
-        if (member == null) {
-            throw new NoSuchElementException("아이디가 '" + memberId + "' 멤버는 존재하지 않습니다.");
-        }
-        /*List<Board> boards = boardService.findBoardByMemberId(memberId);
-
-        if (boards.size() == 0) {
-            throw new NoSuchElementException(memberId + "님이 작성하신 게시판이 존재하지 않습니다.");
-        }
-
-        return boards;*/
-        //페이징 처리 세팅
-        PageHelper.startPage(requestDTO);
-
-        return PageInfo.of(boardService.findBoardByMemberId(memberId));
-    }
-
-    /**
-     * 게시판 제목으로 게시물 조회
-     *
-     * @param
-     * @return
-     */
-    /*@GetMapping("/detail")
-    public PageInfo<Board> requestBoardDetail(RequestDTO requestDTO) {
-        //List<Board> boards = boardService.findBoardByTitle(title);
-        PageHelper.startPage(requestDTO);
-
-        return PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
-    }*/
-
-    /**
      * 모든 게시판 조회(검색타입, 검색어로 조회 가능)
      *
      * @return
      */
-    @GetMapping()
-    public PageInfo<Board> requestBoardAll(RequestDTO requestDTO) {
+    @GetMapping
+    public PagingResponseData<Board> requestBoardAll(RequestData requestData) {
+        if (!"".equals(requestData.getSearchType()) && !"".equals(requestData.getSearchContent())
+                && requestData.getSearchType().equals(RequestType.MEMBER_ID.toString())) {
 
-        PageHelper.startPage(requestDTO);
-
-        /*List<Board> boards = (List<Board>) PageInfo.of(boardService.findAll(requestDTO));
-        if (boards.size() == 0) {
-            throw new NoSuchElementException("게시판이 존재하지 않습니다.");
+            String memberId = requestData.getSearchContent();
+            Member member = memberService.findByMemberId(memberId).orElse(null);
+            if (member == null) {
+                throw new NoSuchElementException("아이디가 '" + memberId + "' 멤버는 존재하지 않습니다.");
+            }
         }
-        return boards;*/
-        return PageInfo.of(boardService.findBoardBySearchWord(requestDTO));
+        return boardService.findBoardBySearchWord(requestData);
     }
 
     /**

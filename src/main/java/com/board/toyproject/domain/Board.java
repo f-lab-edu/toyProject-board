@@ -1,5 +1,6 @@
 package com.board.toyproject.domain;
 
+import javax.validation.constraints.NotEmpty;
 import lombok.*;
 
 @Getter
@@ -10,9 +11,10 @@ import lombok.*;
 public class Board {
 
     int boardId;
-    @NonNull
+    @NonNull @NotEmpty(message = "memberId는 필수 값입니다.")
     String memberId;
-    @NonNull
+
+    @NonNull @NotEmpty(message = "title은 필수 값입니다.")
     String title;
     String regDt;
     String modDt;

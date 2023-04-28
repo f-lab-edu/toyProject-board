@@ -1,7 +1,7 @@
 package com.board.toyproject.domain;
 
 public enum RequestType {
-    TITLE, CONTENT;
+    TITLE, CONTENT,MEMBER_ID;
 
     /**
      * 검색 조건으로 넣어도 되는 타입인지 검증
@@ -9,10 +9,11 @@ public enum RequestType {
      * @return
      */
     public static boolean isRequestType(String requestType){
-        if (!requestType.equals(RequestType.TITLE.toString()) && !requestType.equals(RequestType.CONTENT.toString())) {
-            return false;
-        }else {
-            return true;
+        for(RequestType data : RequestType.values()){
+            if(data.toString().equals(requestType)){
+                return true;
+            }
         }
+        return false;
     }
 }

@@ -2,9 +2,9 @@ package com.board.toyproject.service;
 
 import com.board.toyproject.domain.Board;
 
-import com.board.toyproject.domain.RequestDTO;
+import com.board.toyproject.domain.PagingResponseData;
+import com.board.toyproject.domain.RequestData;
 import java.util.List;
-import java.util.Optional;
 
 public interface BoardService {
 
@@ -12,11 +12,9 @@ public interface BoardService {
 
     Board findBoardByBoardId(int board_id);
 
-    List<Board> findBoardByMemberId(String member_id);
+    /*PagingResponseData<Board> findBoardByMemberId(String member_id);*/
 
-    List<Board> findBoardBySearchWord(RequestDTO requestDTO);
-
-    List<Board> findAll();
+    PagingResponseData<Board> findBoardBySearchWord(RequestData requestData);
 
     int updateBoard(Board board);
 
