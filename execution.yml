@@ -8,6 +8,6 @@ execution:
 scenarios:
   Choose Flight:
     request:
-    - labael: toyproject
+    - label: toyproject
       method: GET
       url: http:localhost:8080/v1/boards
