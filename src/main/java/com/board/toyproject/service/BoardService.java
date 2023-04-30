@@ -2,9 +2,8 @@ package com.board.toyproject.service;
 
 import com.board.toyproject.domain.Board;
 
-import com.board.toyproject.domain.PagingResponseData;
+import com.board.toyproject.domain.Pagination;
 import com.board.toyproject.domain.RequestData;
-import java.util.List;
 
 public interface BoardService {
 
@@ -14,7 +13,7 @@ public interface BoardService {
 
     /*PagingResponseData<Board> findBoardByMemberId(String member_id);*/
 
-    PagingResponseData<Board> findBoardBySearchWord(RequestData requestData);
+    Pagination<Board> findBoardBySearchWord(RequestData requestData);
 
     int updateBoard(Board board);
 

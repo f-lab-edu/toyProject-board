@@ -2,7 +2,6 @@ package com.board.toyproject.repository;
 
 import com.board.toyproject.domain.Board;
 
-import com.board.toyproject.domain.PagingResponseData;
 import com.board.toyproject.domain.RequestData;
 import java.util.List;
 import java.util.Optional;

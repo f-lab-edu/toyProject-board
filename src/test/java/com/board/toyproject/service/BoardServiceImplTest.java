@@ -3,7 +3,7 @@ package com.board.toyproject.service;
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.PagingResponseData;
+import com.board.toyproject.domain.Pagination;
 import com.board.toyproject.domain.RequestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,7 +85,7 @@ class BoardServiceImplTest {
         requestData.setSearchContent(member.getMemberId());
 
         //when
-        PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
+        Pagination<Board> responseData = boardService.findBoardBySearchWord(requestData);
 
         //then
         assertThat(responseData.getList().size()).isEqualTo(3);
@@ -111,7 +110,7 @@ class BoardServiceImplTest {
         requestData.setSearchContent("배유연");
 
         //when
-        PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
+        Pagination<Board> responseData = boardService.findBoardBySearchWord(requestData);
 
         //then
         assertThat(responseData.getList().size()).isEqualTo(2);
@@ -143,29 +142,28 @@ class BoardServiceImplTest {
     }
 
     @Test
-    @DisplayName("모든 게시물 찾기")
+    @DisplayName("10건 페이징테스트")
     public void findAll() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
-        Board board = new Board(member.getMemberId(), "배유연게시판");
-        boardService.writeBoard(board);
-        Board board2 = new Board(member.getMemberId(), "배유연게시판2");
-        boardService.writeBoard(board2);
-        Board board3 = new Board(member.getMemberId(), "배유연게시판3");
-        boardService.writeBoard(board3);
-        Board board4 = new Board(member.getMemberId(), "배유연게시판4");
-        boardService.writeBoard(board4);
+
+        for(int i=0; i<20; i++){
+            Board board = new Board(member.getMemberId(), "죠르디게시판"+i);
+            boardService.writeBoard(board);
+        }
+
 
 
         //RequestData 생성
         RequestData requestData = new RequestData();
+        requestData.setRecordSize(10);
 
         //when
-        PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
+        Pagination<Board> responseData = boardService.findBoardBySearchWord(requestData);
 
         //then
-        assertThat(responseData.getList().size()).isEqualTo(4);
+        assertThat(responseData.getList().size()).isEqualTo(10);
     }
 
     @Test

@@ -1,9 +1,11 @@
 package com.board.toyproject.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class Pagination {
+public class Pagination<T> {
 
     private int totalRecordCount;     // 전체 데이터 수
     private int totalPageCount;       // 전체 페이지 수
@@ -12,6 +14,12 @@ public class Pagination {
     private int limitStart;           // LIMIT 시작 위치
     private boolean existPrevPage;    // 이전 페이지 존재 여부
     private boolean existNextPage;    // 다음 페이지 존재 여부
+
+    private List<T> list = new ArrayList<>();
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
 
     public Pagination(int totalRecordCount, RequestData params) {
         if (totalRecordCount > 0) {

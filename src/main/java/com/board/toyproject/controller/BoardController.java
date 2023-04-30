@@ -3,17 +3,15 @@ package com.board.toyproject.controller;
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.PagingResponseData;
+import com.board.toyproject.domain.Pagination;
 import com.board.toyproject.domain.RequestData;
 import com.board.toyproject.domain.RequestType;
 import com.board.toyproject.service.BoardService;
 import com.board.toyproject.service.MemberService;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
@@ -58,7 +56,7 @@ public class BoardController {
      * @return
      */
     @GetMapping
-    public PagingResponseData<Board> requestBoardAll(RequestData requestData) {
+    public Pagination<Board> requestBoardAll(RequestData requestData) {
         if (requestData.getSearchType() !=null && !"".equals(requestData.getSearchType())
                 && requestData.getSearchContent() !=null && !"".equals(requestData.getSearchContent())
                   && requestData.getSearchType().equals(RequestType.MEMBER_ID.toString())) {

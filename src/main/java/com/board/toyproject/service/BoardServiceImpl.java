@@ -3,7 +3,6 @@ package com.board.toyproject.service;
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Pagination;
-import com.board.toyproject.domain.PagingResponseData;
 import com.board.toyproject.domain.RequestData;
 import com.board.toyproject.domain.RequestType;
 import com.board.toyproject.repository.BoardRepository;
@@ -35,7 +34,7 @@ public class BoardServiceImpl implements BoardService {
     }*/
 
     @Override
-    public PagingResponseData<Board> findBoardBySearchWord(RequestData requestData) {
+    public Pagination<Board> findBoardBySearchWord(RequestData requestData) {
         if (requestData.getSearchType() != null && requestData.getSearchType() != "") {
             if (RequestType.isRequestType(requestData.getSearchType()) == false) { //올바른 요청 조건이 아니면
 
@@ -44,10 +43,12 @@ public class BoardServiceImpl implements BoardService {
         }
 
         int count = boardRepository.count(requestData);
-        Pagination pagination = new Pagination(count, requestData);
+        Pagination<Board> pagination = new Pagination(count, requestData);
         requestData.setPagination(pagination);
         List<Board> list = boardRepository.findBoardBySearchWord(requestData);
-        return new PagingResponseData<>(list, pagination);
+        pagination.setList(list);
+        //return new PagingResponseData<>(list, pagination);
+        return pagination;
     }
 
 
