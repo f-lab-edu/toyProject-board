@@ -7,7 +7,7 @@ execution:
 scenarios:
   Excution Test:
     requests:
-      - label:  rboardDemo
+      - label: toyproject
         method: GET
         url: http://222.235.75.15:8080/v1/boards
 
