@@ -9,5 +9,5 @@ scenarios:
     requests:
       - label: toyproject
         method: GET
-        url: http://222.235.75.15:8080/v1/boards
+        url: http://222.235.75.15:18080/v1/boards #InBound port : 18080
 
