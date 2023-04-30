@@ -59,8 +59,9 @@ public class BoardController {
      */
     @GetMapping
     public PagingResponseData<Board> requestBoardAll(RequestData requestData) {
-        if (!"".equals(requestData.getSearchType()) && !"".equals(requestData.getSearchContent())
-                && requestData.getSearchType().equals(RequestType.MEMBER_ID.toString())) {
+        if (requestData.getSearchType() !=null && !"".equals(requestData.getSearchType())
+                && requestData.getSearchContent() !=null && !"".equals(requestData.getSearchContent())
+                  && requestData.getSearchType().equals(RequestType.MEMBER_ID.toString())) {
 
             String memberId = requestData.getSearchContent();
             Member member = memberService.findByMemberId(memberId).orElse(null);
