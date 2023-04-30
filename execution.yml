@@ -10,5 +10,5 @@ scenarios:
     request:
     - label: toyproject
       method: GET
-      url: http:localhost:8080/v1/boards
+      url: http://222.235.75.15:8080/v1/boards
 
