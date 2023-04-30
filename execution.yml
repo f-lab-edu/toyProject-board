@@ -1,0 +1,14 @@
+--
+execution:
+- concurrency: 5
+  holder-for: 1m
+  ramp-up: 1m
+
+  scenario: Choose Flight
+scenarios:
+  Choose Flight:
+    request:
+    - label: toyproject
+      method: GET
+      url: http://222.235.75.15:8080/v1/boards
+
