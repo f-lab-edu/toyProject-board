@@ -11,32 +11,100 @@
     <result property="regDt" column="reg_dt"/>
   </resultMap>
   <insert id="saveMember">
-    INSERT INTO MEMBER (MEMBER_ID, NAME, PHONE_NUM, REG_DT)
-    VALUES (#{memberId},#{name},#{phoneNum}, NOW())
+    INSERT INTO member (member_id, name, phone_num, reg_dt)
+    VALUES (#{memberId},#{name},#{phoneNum}, now())
   </insert>
-  <select id="findAll" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
-    FROM MEMBER
+  <select id="memberCount"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="int" >
+    SELECT COUNT(member_id)
+    FROM member
+    <trim prefix="where" prefixOverrides="AND">
+      <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND member_id LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND member_id LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'NAME'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND name LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND name LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'PHONE_NUM'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND phone_num LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND phone_num LIKE '%${searchContent}%'
+          </if>
+        </when>
+      </choose>
+    </trim>
+  </select>
+  <select id="findMemberBySearchWord"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+    SELECT member_id, name, phone_num, reg_dt
+    FROM member
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND member_id LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND member_id LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'NAME'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND name LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND name LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'PHONE_NUM'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND phone_num LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND phone_num LIKE '%${searchContent}%'
+          </if>
+        </when>
+      </choose>
+    </trim>
+    <trim prefix="ORDER BY">
+    <if test="orderBy neq null and orderBy neq ''">
+      ${orderBy}
+    </if>
+    </trim>
+    <bind name="limitStart" value="(page-1) * recordSize" />
+    LIMIT #{limitStart}, #{recordSize}
   </select>
   <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+    SELECT member_id, name, phone_num, reg_dt
+    FROM member
+    WHERE member_id = #{memberId}
+  </select>
+<!--  <select id="findByName" parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
     SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
     FROM MEMBER
-    WHERE MEMBER_ID = #{memberId}
-  </select>
-  <select id="findByName" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
-    FROM MEMBER
-    WHERE NAME = #{name}
-  </select>
+    WHERE NAME LIKE '%${searchContent}%'
+    LIMIT #{pagination.limitStart}, #{recordSize}
+  </select>-->
   <update id="updateMember">
-    UPDATE MEMBER
-    SET NAME=COALESCE(#{name},NAME), PHONE_NUM=COALESCE(#{phoneNum},PHONE_NUM)
-    WHERE MEMBER_ID = #{memberId}
+    UPDATE member
+    SET name=COALESCE(#{name},name), phone_num=COALESCE(#{phoneNum},phone_num)
+    WHERE member_id = #{memberId}
   </update>
   <delete id="deleteMember">
     DELETE
-    FROM MEMBER
-    WHERE MEMBER_ID = #{memberId}
+    FROM member
+    WHERE member_id = #{memberId}
   </delete>
 
 
