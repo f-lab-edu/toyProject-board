@@ -1,0 +1,13 @@
+---
+execution:
+  - concurrency: 10
+    hold-for: 2m
+    ramp-up: 1m
+    scenario: Excution Test
+scenarios:
+  Excution Test:
+    requests:
+      - label: toyproject
+        method: GET
+        url: http://222.235.75.15:18080/v1/boards #InBound port : 18080
+

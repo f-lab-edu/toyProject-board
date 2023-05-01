@@ -2,16 +2,13 @@ package com.board.toyproject.controller;
 
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Member;
+import com.board.toyproject.domain.paging.Pagination;
+import com.board.toyproject.domain.paging.PagingRequestData;
 import com.board.toyproject.service.MemberService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.*;
 
@@ -50,25 +47,10 @@ public class MemberController {
      * @return
      */
     @GetMapping
-    public List<Member> requestMemberAll() {
-        List<Member> members = memberService.findAllMember();
-        return members;
+    public Pagination<Member> requestMemberAll(@RequestBody PagingRequestData pagingRequestData) {
+        return memberService.findMemberBySearchWord(pagingRequestData);
     }
 
-    /**
-     * 이름으로 멤버 찾기
-     *
-     * @param name
-     * @return
-     */
-    @GetMapping("/name/{name}")
-    public List<Member> requestMemberByName(@PathVariable String name) {
-        List<Member> members = memberService.findByMemberName(name);
-        if (members.size() == 0) {
-            throw new NoSuchElementException("이름이 '" + name + "' 멤버는 존재하지 않습니다.");
-        }
-        return members;
-    }
 
     /**
      * 아이디로 멤버 찾기

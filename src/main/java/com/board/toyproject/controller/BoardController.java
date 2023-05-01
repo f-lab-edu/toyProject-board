@@ -3,9 +3,9 @@ package com.board.toyproject.controller;
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.Pagination;
-import com.board.toyproject.domain.RequestData;
-import com.board.toyproject.domain.RequestType;
+import com.board.toyproject.domain.paging.Pagination;
+import com.board.toyproject.domain.paging.PagingRequestData;
+import com.board.toyproject.domain.paging.PagingRequestType;
 import com.board.toyproject.service.BoardService;
 import com.board.toyproject.service.MemberService;
 import javax.validation.Valid;
@@ -56,18 +56,18 @@ public class BoardController {
      * @return
      */
     @GetMapping
-    public Pagination<Board> requestBoardAll(RequestData requestData) {
-        if (requestData.getSearchType() !=null && !"".equals(requestData.getSearchType())
-                && requestData.getSearchContent() !=null && !"".equals(requestData.getSearchContent())
-                  && requestData.getSearchType().equals(RequestType.MEMBER_ID.toString())) {
+    public Pagination<Board> requestBoardAll(@RequestBody PagingRequestData pagingRequestData) {
+        if (pagingRequestData.getSearchType() !=null && !"".equals(pagingRequestData.getSearchType())
+                && pagingRequestData.getSearchContent() !=null && !"".equals(pagingRequestData.getSearchContent())
+                  && pagingRequestData.getSearchType().equals(PagingRequestType.MEMBER_ID.toString())) {
 
-            String memberId = requestData.getSearchContent();
+            String memberId = pagingRequestData.getSearchContent();
             Member member = memberService.findByMemberId(memberId).orElse(null);
             if (member == null) {
                 throw new NoSuchElementException("아이디가 '" + memberId + "' 멤버는 존재하지 않습니다.");
             }
         }
-        return boardService.findBoardBySearchWord(requestData);
+        return boardService.findBoardBySearchWord(pagingRequestData);
     }
 
     /**
