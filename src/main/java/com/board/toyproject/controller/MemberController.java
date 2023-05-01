@@ -2,6 +2,8 @@ package com.board.toyproject.controller;
 
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Member;
+import com.board.toyproject.domain.Pagination;
+import com.board.toyproject.domain.RequestData;
 import com.board.toyproject.service.MemberService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +52,8 @@ public class MemberController {
      * @return
      */
     @GetMapping
-    public List<Member> requestMemberAll() {
-        List<Member> members = memberService.findAllMember();
-        return members;
+    public Pagination<Member> requestMemberAll(RequestData requestData) {
+        return memberService.findAllMember(requestData);
     }
 
     /**

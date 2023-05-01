@@ -2,6 +2,8 @@ package com.board.toyproject.service;
 
 import com.board.toyproject.domain.Member;
 
+import com.board.toyproject.domain.Pagination;
+import com.board.toyproject.domain.RequestData;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +15,7 @@ public interface MemberService {
 
     List<Member> findByMemberName(String name);
 
-    List<Member> findAllMember();
+    Pagination<Member> findAllMember(RequestData requestData);
 
     String updateMember(Member member);
 

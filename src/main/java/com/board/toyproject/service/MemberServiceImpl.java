@@ -1,6 +1,9 @@
 package com.board.toyproject.service;
 
+import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
+import com.board.toyproject.domain.Pagination;
+import com.board.toyproject.domain.RequestData;
 import com.board.toyproject.repository.MemberRepository;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.dao.DuplicateKeyException;
@@ -48,8 +51,14 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByName(name);
     }
 
-    public List<Member> findAllMember() {
-        return memberRepository.findAll();
+    public Pagination<Member> findAllMember(RequestData requestData) {
+
+        int count = memberRepository.memberCount(requestData);
+        Pagination<Member> pagination = new Pagination(count, requestData);
+        requestData.setPagination(pagination);
+        List<Member> list = memberRepository.findAll(requestData);
+        pagination.setList(list);
+        return pagination;
     }
 
     //멤버 수정

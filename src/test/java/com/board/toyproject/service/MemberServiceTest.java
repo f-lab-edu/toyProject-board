@@ -1,8 +1,12 @@
 package com.board.toyproject.service;
 
 import com.board.toyproject.SpringConfig;
+import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
+import com.board.toyproject.domain.Pagination;
+import com.board.toyproject.domain.RequestData;
 import com.board.toyproject.repository.MemberRepository;
+import lombok.Data;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -60,7 +64,25 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("멤버10건 페이징 테스트")
+    public void findAllMember(){
+        for(int i=0; i<20; i++){
+            Member member = new Member("memberIdTest"+i, "테스트 멤버명"+i);
+            memberService.join(member);
+        }
+        //RequestData 생성
+        RequestData requestData = new RequestData();
+
+        //when
+        Pagination<Member> responseData = memberService.findAllMember(requestData);
+
+        //then
+        assertThat(responseData.getList().size()).isEqualTo(10);
+    }
+
+    @Test
     void memberUpdate() {
+
         //given
         Member member = new Member();
         member.setMemberId("testId123");

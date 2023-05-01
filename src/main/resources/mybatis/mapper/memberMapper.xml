@@ -14,9 +14,14 @@
     INSERT INTO MEMBER (MEMBER_ID, NAME, PHONE_NUM, REG_DT)
     VALUES (#{memberId},#{name},#{phoneNum}, NOW())
   </insert>
-  <select id="findAll" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+  <select id="memberCount"  parameterType="com.board.toyproject.domain.RequestData" resultType="int" >
+    SELECT COUNT(MEMBER_ID)
+    FROM MEMBER
+  </select>
+  <select id="findAll"  parameterType="com.board.toyproject.domain.RequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
     SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
     FROM MEMBER
+    LIMIT #{pagination.limitStart}, #{recordSize}
   </select>
   <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
     SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
