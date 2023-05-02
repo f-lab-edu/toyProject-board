@@ -5,6 +5,7 @@ import com.board.toyproject.domain.Member;
 import com.board.toyproject.domain.Pagination;
 import com.board.toyproject.domain.RequestData;
 import com.board.toyproject.repository.MemberRepository;
+import javax.security.sasl.AuthenticationException;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,15 @@ public class MemberServiceImpl implements MemberService {
     public Optional<Member> findByMemberId(String memberId) {
         return Optional.of(memberRepository.findById(memberId).orElseThrow(() ->
                 new NoSuchElementException("해당하는 member를 찾을 수 없습니다.")));
+    }
+
+    @Override
+    public Member login(Member member) throws AuthenticationException {
+        Optional<Member> getMember = findByMemberId(member.getMemberId());
+        if (!member.getPassword().equals(getMember.get().getPassword())) {
+            throw new AuthenticationException("아이디 혹은 비밀번호가 틀렸습니다.");
+        }
+        return member;
     }
 
     /**

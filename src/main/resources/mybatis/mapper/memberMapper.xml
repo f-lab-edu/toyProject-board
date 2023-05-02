@@ -9,27 +9,28 @@
     <result property="name" column="name"/>
     <result property="phoneNum" column="phone_num"/>
     <result property="regDt" column="reg_dt"/>
+    <result property="password" column="password"/>
   </resultMap>
   <insert id="saveMember">
-    INSERT INTO MEMBER (MEMBER_ID, NAME, PHONE_NUM, REG_DT)
-    VALUES (#{memberId},#{name},#{phoneNum}, NOW())
+    INSERT INTO MEMBER (MEMBER_ID, PASSWORD, NAME, PHONE_NUM, REG_DT)
+    VALUES (#{memberId},#{password},#{name},#{phoneNum}, NOW())
   </insert>
   <select id="memberCount"  parameterType="com.board.toyproject.domain.RequestData" resultType="int" >
     SELECT COUNT(MEMBER_ID)
     FROM MEMBER
   </select>
   <select id="findAll"  parameterType="com.board.toyproject.domain.RequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
+    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT, PASSWORD
     FROM MEMBER
     LIMIT #{pagination.limitStart}, #{recordSize}
   </select>
   <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
+    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT, PASSWORD
     FROM MEMBER
     WHERE MEMBER_ID = #{memberId}
   </select>
   <select id="findByName" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
+    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT, PASSWORD
     FROM MEMBER
     WHERE NAME = #{name}
   </select>

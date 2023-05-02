@@ -38,6 +38,7 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         member.setMemberId("testId123");
+        member.setPassword("password123");
         member.setName("이름이름큐큐큐");
         member.setPhoneNum("1122233");
         //when
@@ -52,9 +53,9 @@ class MemberServiceTest {
     @DisplayName("중복가입 테스트")
     void memberDuplicateJoin(){
         //given
-        Member member = new Member("test11", "유연");
+        Member member = new Member("test11","password123", "유연");
         memberService.join(member);
-        Member member2 = new Member("test11", "유연중복");
+        Member member2 = new Member("test11","password123", "유연중복");
 
         //when
         //memberService.join(member2);
@@ -67,7 +68,7 @@ class MemberServiceTest {
     @DisplayName("멤버10건 페이징 테스트")
     public void findAllMember(){
         for(int i=0; i<20; i++){
-            Member member = new Member("memberIdTest"+i, "테스트 멤버명"+i);
+            Member member = new Member("memberIdTest"+i,"password123", "테스트 멤버명"+i);
             memberService.join(member);
         }
         //RequestData 생성
@@ -87,6 +88,7 @@ class MemberServiceTest {
         Member member = new Member();
         member.setMemberId("testId123");
         member.setName("이름이름큐큐큐");
+        member.setPassword("password123");
         member.setPhoneNum("1122233");
 
         memberService.join(member); //일단 가입
@@ -105,6 +107,7 @@ class MemberServiceTest {
         Member member = new Member();
         member.setMemberId("testId123");
         member.setName("이름이름큐큐큐");
+        member.setPassword("paswword123");
         member.setPhoneNum("1122233");
 
         memberService.join(member); //일단 가입
