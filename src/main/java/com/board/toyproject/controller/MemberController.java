@@ -2,18 +2,13 @@ package com.board.toyproject.controller;
 
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.Pagination;
-import com.board.toyproject.domain.RequestData;
+import com.board.toyproject.domain.paging.Pagination;
+import com.board.toyproject.domain.paging.PagingRequestData;
 import com.board.toyproject.service.MemberService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.*;
 
@@ -52,8 +47,8 @@ public class MemberController {
      * @return
      */
     @GetMapping
-    public Pagination<Member> requestMemberAll(RequestData requestData) {
-        return memberService.findAllMember(requestData);
+    public Pagination<Member> requestMemberAll(@RequestBody PagingRequestData pagingRequestData) {
+        return memberService.findAllMember(pagingRequestData);
     }
 
     /**

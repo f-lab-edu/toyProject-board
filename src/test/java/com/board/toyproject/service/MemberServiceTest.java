@@ -1,25 +1,15 @@
 package com.board.toyproject.service;
 
-import com.board.toyproject.SpringConfig;
-import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.Pagination;
-import com.board.toyproject.domain.RequestData;
-import com.board.toyproject.repository.MemberRepository;
-import lombok.Data;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import com.board.toyproject.domain.paging.Pagination;
+import com.board.toyproject.domain.paging.PagingRequestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,11 +60,11 @@ class MemberServiceTest {
             Member member = new Member("memberIdTest"+i, "테스트 멤버명"+i);
             memberService.join(member);
         }
-        //RequestData 생성
-        RequestData requestData = new RequestData();
+        //PagingRequestData 생성
+        PagingRequestData pagingRequestData = new PagingRequestData();
 
         //when
-        Pagination<Member> responseData = memberService.findAllMember(requestData);
+        Pagination<Member> responseData = memberService.findAllMember(pagingRequestData);
 
         //then
         assertThat(responseData.getList().size()).isEqualTo(10);

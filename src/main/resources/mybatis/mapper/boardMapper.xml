@@ -32,7 +32,7 @@
     FROM BOARD
     WHERE TITLE LIKE '%${title}%'
   </select>-->
-  <select id="count" parameterType="com.board.toyproject.domain.RequestData" resultType="int">
+  <select id="count" parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="int">
     SELECT count(board_id)
     FROM BOARD
     <trim prefix="WHERE" prefixOverrides="AND">
@@ -67,7 +67,7 @@
     </trim>
   </select>
 
-  <select id="findBoardBySearchWord" parameterType="com.board.toyproject.domain.RequestData"
+  <select id="findBoardBySearchWord" parameterType="com.board.toyproject.domain.paging.PagingRequestData"
     resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
     SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
     FROM BOARD

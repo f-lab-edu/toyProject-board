@@ -1,6 +1,6 @@
-package com.board.toyproject.domain;
+package com.board.toyproject.domain.paging;
 
-public enum RequestType {
+public enum PagingRequestType {
     TITLE, CONTENT, MEMBER_ID;
 
     /**
@@ -10,7 +10,7 @@ public enum RequestType {
      * @return
      */
     public static boolean isRequestType(String requestType) {
-        for (RequestType data : RequestType.values()) {
+        for (PagingRequestType data : PagingRequestType.values()) {
             if (data.toString().equals(requestType)) {
                 return true;
             }

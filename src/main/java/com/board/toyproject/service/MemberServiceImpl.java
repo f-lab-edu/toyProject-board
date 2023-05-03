@@ -1,13 +1,10 @@
 package com.board.toyproject.service;
 
-import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.Pagination;
-import com.board.toyproject.domain.RequestData;
+import com.board.toyproject.domain.paging.Pagination;
+import com.board.toyproject.domain.paging.PagingRequestData;
 import com.board.toyproject.repository.MemberRepository;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,12 +48,12 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByName(name);
     }
 
-    public Pagination<Member> findAllMember(RequestData requestData) {
+    public Pagination<Member> findAllMember(PagingRequestData pagingRequestData) {
 
-        int count = memberRepository.memberCount(requestData);
-        Pagination<Member> pagination = new Pagination(count, requestData);
-        requestData.setPagination(pagination);
-        List<Member> list = memberRepository.findAll(requestData);
+        int count = memberRepository.memberCount(pagingRequestData);
+        Pagination<Member> pagination = new Pagination(count, pagingRequestData);
+        pagingRequestData.setPagination(pagination);
+        List<Member> list = memberRepository.findAll(pagingRequestData);
         pagination.setList(list);
         return pagination;
     }

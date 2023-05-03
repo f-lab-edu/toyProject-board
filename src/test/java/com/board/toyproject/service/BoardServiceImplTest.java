@@ -3,8 +3,8 @@ package com.board.toyproject.service;
 import com.board.toyproject.controller.exception.BadRequestException;
 import com.board.toyproject.domain.Board;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.domain.Pagination;
-import com.board.toyproject.domain.RequestData;
+import com.board.toyproject.domain.paging.Pagination;
+import com.board.toyproject.domain.paging.PagingRequestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,12 +80,12 @@ class BoardServiceImplTest {
         Board board3 = new Board(member.getMemberId(), "타이틀테스트3");
         boardService.writeBoard(board3);
 
-        RequestData requestData = new RequestData();
-        requestData.setSearchType("MEMBER_ID");
-        requestData.setSearchContent(member.getMemberId());
+        PagingRequestData pagingRequestData = new PagingRequestData();
+        pagingRequestData.setSearchType("MEMBER_ID");
+        pagingRequestData.setSearchContent(member.getMemberId());
 
         //when
-        Pagination<Board> responseData = boardService.findBoardBySearchWord(requestData);
+        Pagination<Board> responseData = boardService.findBoardBySearchWord(pagingRequestData);
 
         //then
         assertThat(responseData.getList().size()).isEqualTo(3);
@@ -104,13 +104,13 @@ class BoardServiceImplTest {
         Board board3 = new Board(member.getMemberId(), "이지후게시판");
         boardService.writeBoard(board3);
 
-        //RequestData 생성
-        RequestData requestData = new RequestData();
-        requestData.setSearchType("TITLE");
-        requestData.setSearchContent("배유연");
+        //PagingRequestData 생성
+        PagingRequestData pagingRequestData = new PagingRequestData();
+        pagingRequestData.setSearchType("TITLE");
+        pagingRequestData.setSearchContent("배유연");
 
         //when
-        Pagination<Board> responseData = boardService.findBoardBySearchWord(requestData);
+        Pagination<Board> responseData = boardService.findBoardBySearchWord(pagingRequestData);
 
         //then
         assertThat(responseData.getList().size()).isEqualTo(2);
@@ -128,17 +128,17 @@ class BoardServiceImplTest {
         Board board3 = new Board(member.getMemberId(), "이지후게시판");
         boardService.writeBoard(board3);
 
-        //RequestData 생성
-        RequestData requestData = new RequestData();
-        requestData.setSearchType("NON_DATA");
-        requestData.setSearchContent("배유연");
+        //PagingRequestData 생성
+        PagingRequestData pagingRequestData = new PagingRequestData();
+        pagingRequestData.setSearchType("NON_DATA");
+        pagingRequestData.setSearchContent("배유연");
 
         //when
-        //PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(requestData);
+        //PagingResponseData<Board> responseData = boardService.findBoardBySearchWord(pagingRequestData);
 
         //then
         assertThrows(BadRequestException.class,
-                () -> boardService.findBoardBySearchWord(requestData));
+                () -> boardService.findBoardBySearchWord(pagingRequestData));
     }
 
     @Test
@@ -155,12 +155,12 @@ class BoardServiceImplTest {
 
 
 
-        //RequestData 생성
-        RequestData requestData = new RequestData();
-        requestData.setRecordSize(10);
+        //PagingRequestData 생성
+        PagingRequestData pagingRequestData = new PagingRequestData();
+        pagingRequestData.setRecordSize(10);
 
         //when
-        Pagination<Board> responseData = boardService.findBoardBySearchWord(requestData);
+        Pagination<Board> responseData = boardService.findBoardBySearchWord(pagingRequestData);
 
         //then
         assertThat(responseData.getList().size()).isEqualTo(10);
