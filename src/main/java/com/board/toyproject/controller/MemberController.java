@@ -48,23 +48,9 @@ public class MemberController {
      */
     @GetMapping
     public Pagination<Member> requestMemberAll(@RequestBody PagingRequestData pagingRequestData) {
-        return memberService.findAllMember(pagingRequestData);
+        return memberService.findMemberBySearchWord(pagingRequestData);
     }
 
-    /**
-     * 이름으로 멤버 찾기
-     *
-     * @param name
-     * @return
-     */
-    @GetMapping("/name/{name}")
-    public List<Member> requestMemberByName(@PathVariable String name) {
-        List<Member> members = memberService.findByMemberName(name);
-        if (members.size() == 0) {
-            throw new NoSuchElementException("이름이 '" + name + "' 멤버는 존재하지 않습니다.");
-        }
-        return members;
-    }
 
     /**
      * 아이디로 멤버 찾기

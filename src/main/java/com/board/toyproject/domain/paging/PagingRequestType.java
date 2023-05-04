@@ -1,7 +1,7 @@
 package com.board.toyproject.domain.paging;
 
 public enum PagingRequestType {
-    TITLE, CONTENT, MEMBER_ID;
+    TITLE, CONTENT, MEMBER_ID, NAME, PHONE_NUM;
 
     /**
      * 검색 조건으로 넣어도 되는 타입인지 검증

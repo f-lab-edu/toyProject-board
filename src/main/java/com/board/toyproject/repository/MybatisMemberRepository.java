@@ -17,10 +17,7 @@ public interface MybatisMemberRepository extends MemberRepository {
     Optional<Member> findById(String memberId);
 
     @Override
-    List<Member> findByName(String name);
-
-    @Override
-    List<Member> findAll(PagingRequestData pagingRequestData);
+    List<Member> findMemberBySearchWord(PagingRequestData pagingRequestData);
 
     @Override
     int memberCount(PagingRequestData pagingRequestData);

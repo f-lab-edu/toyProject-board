@@ -17,10 +17,67 @@
   <select id="memberCount"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="int" >
     SELECT COUNT(MEMBER_ID)
     FROM MEMBER
+    <trim prefix="where" prefixOverrides="AND">
+      <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND MEMBER_ID LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND MEMBER_ID LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'NAME'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND NAME LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND NAME LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'PHONE_NUM'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND PHONE_NUM LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND PHONE_NUM LIKE '%${searchContent}%'
+          </if>
+        </when>
+      </choose>
+    </trim>
   </select>
-  <select id="findAll"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+  <select id="findMemberBySearchWord"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
     SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
     FROM MEMBER
+    <trim prefix="where" prefixOverrides="AND">
+      <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND MEMBER_ID LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND MEMBER_ID LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'NAME'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND NAME LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND NAME LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'PHONE_NUM'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND PHONE_NUM LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND PHONE_NUM LIKE '%${searchContent}%'
+          </if>
+        </when>
+      </choose>
+    </trim>
+    ORDER BY MEMBER_ID
     LIMIT #{pagination.limitStart}, #{recordSize}
   </select>
   <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
@@ -28,11 +85,12 @@
     FROM MEMBER
     WHERE MEMBER_ID = #{memberId}
   </select>
-  <select id="findByName" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+<!--  <select id="findByName" parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
     SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
     FROM MEMBER
-    WHERE NAME = #{name}
-  </select>
+    WHERE NAME LIKE '%${searchContent}%'
+    LIMIT #{pagination.limitStart}, #{recordSize}
+  </select>-->
   <update id="updateMember">
     UPDATE MEMBER
     SET NAME=COALESCE(#{name},NAME), PHONE_NUM=COALESCE(#{phoneNum},PHONE_NUM)

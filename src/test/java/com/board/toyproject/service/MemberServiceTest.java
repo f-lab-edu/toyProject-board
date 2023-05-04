@@ -64,12 +64,45 @@ class MemberServiceTest {
         PagingRequestData pagingRequestData = new PagingRequestData();
 
         //when
-        Pagination<Member> responseData = memberService.findAllMember(pagingRequestData);
+        Pagination<Member> responseData = memberService.findMemberBySearchWord(pagingRequestData);
 
         //then
         assertThat(responseData.getList().size()).isEqualTo(10);
     }
+    @Test
+    @DisplayName("멤버16건에 대한 페이징 테스트")
+    public void find16Member(){
+        for(int i=0; i<16; i++){
+            Member member = new Member("memberIdTest"+(i+1), "테스트 멤버명"+(i+1));
+            memberService.join(member);
+        }
+        //PagingRequestData 생성
+        PagingRequestData pagingRequestData = new PagingRequestData();
 
+        pagingRequestData.setSearchType("MEMBER_ID");
+        pagingRequestData.setSearchContent("memberIdTest");
+        pagingRequestData.setPage(1);
+        pagingRequestData.setRecordSize(10);
+
+        //when
+        Pagination<Member> responseData = memberService.findMemberBySearchWord(pagingRequestData);
+
+        //then
+        assertThat(responseData.getList().size()).isEqualTo(10);
+
+        //given2
+        pagingRequestData.setPage(2);
+        pagingRequestData.setRecordSize(10);
+
+        //when
+        Pagination<Member> responseData2 = memberService.findMemberBySearchWord(pagingRequestData);
+
+        //then
+        assertThat(responseData2.getList().size()).isEqualTo(6);
+
+
+
+    }
     @Test
     void memberUpdate() {
 

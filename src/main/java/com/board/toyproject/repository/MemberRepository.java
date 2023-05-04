@@ -12,9 +12,7 @@ public interface MemberRepository {
 
     Optional<Member> findById(String memberId);
 
-    List<Member> findByName(String name);
-
-    List<Member> findAll(PagingRequestData pagingRequestData);
+    List<Member> findMemberBySearchWord(PagingRequestData pagingRequestData);
 
     int memberCount(PagingRequestData pagingRequestData);
 

@@ -13,9 +13,7 @@ public interface MemberService {
 
     Optional<Member> findByMemberId(String memberId);
 
-    List<Member> findByMemberName(String name);
-
-    Pagination<Member> findAllMember(PagingRequestData pagingRequestData);
+    Pagination<Member> findMemberBySearchWord(PagingRequestData pagingRequestData);
 
     String updateMember(Member member);
 
