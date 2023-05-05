@@ -152,9 +152,6 @@ class BoardServiceImplTest {
             Board board = new Board(member.getMemberId(), "죠르디게시판"+i);
             boardService.writeBoard(board);
         }
-
-
-
         //PagingRequestData 생성
         PagingRequestData pagingRequestData = new PagingRequestData();
         pagingRequestData.setRecordSize(10);
@@ -201,6 +198,4 @@ class BoardServiceImplTest {
         assertThrows(NoSuchElementException.class,
                 () -> boardService.findBoardByBoardId(board.getBoardId()));
     }
-
-
 }
