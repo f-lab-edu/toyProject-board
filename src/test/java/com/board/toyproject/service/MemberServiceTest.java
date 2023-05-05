@@ -115,8 +115,6 @@ class MemberServiceTest {
         assertThat(member9.getMemberId()).isEqualTo("memberIdTest2");
         assertThat(member10.getMemberId()).isEqualTo("memberIdTest3");
 
-
-
         //given2
         pagingRequestData.setPage(2);
         pagingRequestData.setRecordSize(10);
