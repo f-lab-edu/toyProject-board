@@ -116,8 +116,6 @@ class MemberServiceTest {
             Member getMember = responseData2.getList().get(i);
             assertThat(getMember.getMemberId()).isEqualTo("memberIdTest" + (i + 1 + record_size));
         }
-
-
     }
 
     @Test

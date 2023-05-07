@@ -14,7 +14,8 @@
     INSERT INTO member (member_id, name, phone_num, reg_dt)
     VALUES (#{memberId},#{name},#{phoneNum}, now())
   </insert>
-  <select id="memberCount"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="int" >
+  <select id="memberCount" parameterType="com.board.toyproject.domain.paging.PagingRequestData"
+    resultType="int">
     SELECT COUNT(member_id)
     FROM member
     <trim prefix="where" prefixOverrides="AND">
@@ -46,7 +47,9 @@
       </choose>
     </trim>
   </select>
-  <select id="findMemberBySearchWord"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+  <select id="findMemberBySearchWord"
+    parameterType="com.board.toyproject.domain.paging.PagingRequestData"
+    resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
     SELECT member_id, name, phone_num, reg_dt
     FROM member
     <trim prefix="WHERE" prefixOverrides="AND">
@@ -78,11 +81,11 @@
       </choose>
     </trim>
     <trim prefix="ORDER BY">
-    <if test="orderBy neq null and orderBy neq ''">
-      ${orderBy}
-    </if>
+      <if test="orderBy neq null and orderBy neq ''">
+        ${orderBy}
+      </if>
     </trim>
-    <bind name="limitStart" value="(page-1) * recordSize" />
+    <bind name="limitStart" value="(page - 1) * recordSize"/>
     LIMIT #{limitStart}, #{recordSize}
   </select>
   <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
@@ -90,12 +93,12 @@
     FROM member
     WHERE member_id = #{memberId}
   </select>
-<!--  <select id="findByName" parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
-    FROM MEMBER
-    WHERE NAME LIKE '%${searchContent}%'
-    LIMIT #{pagination.limitStart}, #{recordSize}
-  </select>-->
+  <!--  <select id="findByName" parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+      SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
+      FROM MEMBER
+      WHERE NAME LIKE '%${searchContent}%'
+      LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>-->
   <update id="updateMember">
     UPDATE member
     SET name=COALESCE(#{name},name), phone_num=COALESCE(#{phoneNum},phone_num)
