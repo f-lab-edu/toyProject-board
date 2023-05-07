@@ -30,7 +30,7 @@ class BoardServiceImplTest {
     @DisplayName("게시물 저장하기 테스트")
     public void writeBoard() {
         //given
-        Member member = new Member("test11","password123", "유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
         Board board = new Board(member.getMemberId(), "타이틀테스트");
         board.setContent("내용넣기");
@@ -45,7 +45,7 @@ class BoardServiceImplTest {
     @DisplayName("게시판 아이디로 게시물 찾기")
     public void findBoardByBoardId() {
         //given
-        Member member = new Member("test11", "password123","유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
         Board board = new Board(member.getMemberId(), "타이틀테스트");
         boardService.writeBoard(board);
@@ -71,7 +71,7 @@ class BoardServiceImplTest {
     @DisplayName("멤버아이디로 게시물 리스트 찾기")
     public void findBoardByMemberId() {
         //given
-        Member member = new Member("test11","password123", "유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
         Board board = new Board(member.getMemberId(), "타이틀테스트");
         boardService.writeBoard(board);
@@ -95,7 +95,7 @@ class BoardServiceImplTest {
     @DisplayName("제목으로 게시물들 찾기.")
     public void findBoardByTitle() {
         //given
-        Member member = new Member("test11","password123", "유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
         Board board = new Board(member.getMemberId(), "배유연게시판");
         boardService.writeBoard(board);
@@ -119,7 +119,7 @@ class BoardServiceImplTest {
     @DisplayName("검색타입으로 없는 타입 넣기")
     public void findBoardByNoType() {
         //given
-        Member member = new Member("test11","password123", "유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
         Board board = new Board(member.getMemberId(), "배유연게시판");
         boardService.writeBoard(board);
@@ -145,7 +145,7 @@ class BoardServiceImplTest {
     @DisplayName("10건 페이징테스트")
     public void findAll() {
         //given
-        Member member = new Member("test11","password123", "유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
 
         for(int i=0; i<20; i++){
@@ -167,7 +167,7 @@ class BoardServiceImplTest {
     @DisplayName("게시판 수정")
     public void updateBoard() {
         //given
-        Member member = new Member("test11","password123", "유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
         Board board = new Board(member.getMemberId(), "타이틀테스트");
         board.setContent("내용before");
@@ -185,7 +185,7 @@ class BoardServiceImplTest {
     @DisplayName("게시판 삭제")
     public void deleteBoard() {
         //given
-        Member member = new Member("test11","password123", "유연");
+        Member member = new Member("test11", "유연");
         memberService.join(member);
         Board board = new Board(member.getMemberId(), "타이틀테스트");
 

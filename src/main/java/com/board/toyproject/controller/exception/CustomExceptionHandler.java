@@ -1,6 +1,5 @@
 package com.board.toyproject.controller.exception;
 
-import javax.security.sasl.AuthenticationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +27,7 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
-    //401 error 처리
-    @ExceptionHandler(AuthenticationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<String> handleAuthenticationException(AuthenticationException exception) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
-    }
+
     //404 error 처리
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

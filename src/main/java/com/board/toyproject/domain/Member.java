@@ -13,8 +13,6 @@ public class Member {
 
     @NonNull @NotEmpty(message = "memberId는 필수 값입니다.")
     String memberId;
-    @NonNull @NotEmpty(message = "password는 필수 값입니다.")
-    String password;
     @NonNull @NotEmpty(message = "name은 필수 값입니다.")
     String name;
     @Pattern(regexp = "^\\d+$", message = "phoneNum는 숫자만 입력가능합니다.")
@@ -25,10 +23,11 @@ public class Member {
     public String toString() {
         return "Member{" +
                 "memberId='" + memberId + '\'' +
-                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", phoneNum='" + phoneNum + '\'' +
                 ", regDt='" + regDt + '\'' +
                 '}';
     }
+
+
 }
