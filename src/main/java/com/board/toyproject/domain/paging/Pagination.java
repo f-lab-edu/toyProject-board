@@ -16,16 +16,15 @@ public class Pagination<T> {
         this.list = list;
     }
 
-    public Pagination(int totalRecordCount, PagingRequestData params) {
+    public Pagination(int totalRecordCount) {
         if (totalRecordCount > 0) {
             this.totalRecordCount = totalRecordCount;
-            calculate(params);
         }
     }
 
-    private void calculate(PagingRequestData params) {
+    /*private void calculate(PagingRequestData params) {
         // LIMIT 시작 위치 계산
         limitStart = (params.getPage() - 1) * params.getRecordSize();
-    }
+    }*/
 
 }

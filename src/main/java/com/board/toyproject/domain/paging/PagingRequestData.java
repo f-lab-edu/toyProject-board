@@ -14,7 +14,6 @@ public class PagingRequestData {
     private String searchContent;           // 검색 키워드
     private String searchType;        // 검색 유형
     private String orderBy;
-    private Pagination pagination;    // 페이지네이션 정보
 
     public PagingRequestData() {
         this.page = 1;

@@ -48,8 +48,8 @@ public class MemberServiceImpl implements MemberService {
             }
         }
         int count = memberRepository.memberCount(pagingRequestData);
-        Pagination<Member> pagination = new Pagination(count, pagingRequestData);
-        pagingRequestData.setPagination(pagination);
+        Pagination<Member> pagination = new Pagination(count);
+        //pagingRequestData.setPagination(pagination);
         List<Member> list = memberRepository.findMemberBySearchWord(pagingRequestData);
         pagination.setList(list);
         return pagination;

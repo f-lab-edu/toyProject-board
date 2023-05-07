@@ -11,15 +11,15 @@
     <result property="content" column="content"/>
   </resultMap>
   <insert id="saveBoard" useGeneratedKeys="true" keyProperty="boardId">
-    INSERT INTO BOARD (MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT)
+    INSERT INTO board (member_id, title, reg_dt, content, mod_dt)
     VALUES (#{memberId}, #{title}, NOW(), #{content}, NOW())
   </insert>
 
   <select id="findBoardByBoardId" resultType="com.board.toyproject.domain.Board"
     resultMap="boardMap">
-    SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
-    FROM BOARD
-    WHERE BOARD_ID=#{board_id}
+    SELECT board_id, member_id, title, reg_dt, content, mod_dt
+    FROM board
+    WHERE board_id=#{board_id}
   </select>
   <!--<select id="findBoardByMemberId" resultType="com.board.toyproject.domain.Board"
     resultMap="boardMap">
@@ -34,32 +34,32 @@
   </select>-->
   <select id="count" parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="int">
     SELECT count(board_id)
-    FROM BOARD
+    FROM board
     <trim prefix="WHERE" prefixOverrides="AND">
       <if test="searchType neq null and searchType neq ''">
         <choose>
           <when test="searchType eq 'MEMBER_ID'.toString()">
             <if test="searchContent eq null and searchContent eq '' ">
-              AND MEMBER_ID LIKE ''
+              AND member_id LIKE ''
             </if>
             <if test="searchContent neq null and searchContent neq '' ">
-              AND MEMBER_ID LIKE '%${searchContent}%'
+              AND member_id LIKE '%${searchContent}%'
             </if>
           </when>
           <when test="searchType eq 'TITLE'.toString()">
             <if test="searchContent eq null and searchContent eq '' ">
-              AND TITLE LIKE ''
+              AND title LIKE ''
             </if>
             <if test="searchContent neq null and searchContent neq '' ">
-              AND TITLE LIKE '%${searchContent}%'
+              AND title LIKE '%${searchContent}%'
             </if>
           </when>
           <when test="searchType eq 'CONTENT'.toString()">
             <if test="searchContent eq null and searchContent eq '' ">
-              AND CONTENT LIKE ''
+              AND content LIKE ''
             </if>
             <if test="searchContent neq null and searchContent neq '' ">
-              AND CONTENT LIKE '%${searchContent}%'
+              AND content LIKE '%${searchContent}%'
             </if>
           </when>
         </choose>
@@ -69,49 +69,50 @@
 
   <select id="findBoardBySearchWord" parameterType="com.board.toyproject.domain.paging.PagingRequestData"
     resultType="com.board.toyproject.domain.Board" resultMap="boardMap">
-    SELECT BOARD_ID, MEMBER_ID, TITLE, REG_DT, CONTENT, MOD_DT
-    FROM BOARD
+    SELECT board_id, member_id, title, reg_dt, content, mod_dt
+    FROM board
     <trim prefix="where" prefixOverrides="AND">
       <if test="searchType neq null and searchType neq ''">
         <choose>
           <when test="searchType eq 'MEMBER_ID'.toString()">
             <if test="searchContent eq null and searchContent eq '' ">
-              AND MEMBER_ID LIKE ''
+              AND member_id LIKE ''
             </if>
             <if test="searchContent neq null and searchContent neq '' ">
-              AND MEMBER_ID LIKE '%${searchContent}%'
+              AND member_id LIKE '%${searchContent}%'
             </if>
           </when>
           <when test="searchType eq 'TITLE'.toString()">
             <if test="searchContent eq null and searchContent eq '' ">
-              AND TITLE LIKE ''
+              AND title LIKE ''
             </if>
             <if test="searchContent neq null and searchContent neq '' ">
-              AND TITLE LIKE '%${searchContent}%'
+              AND title LIKE '%${searchContent}%'
             </if>
           </when>
           <when test="searchType eq 'CONTENT'.toString()">
             <if test="searchContent eq null and searchContent eq '' ">
-              AND CONTENT LIKE ''
+              AND content LIKE ''
             </if>
             <if test="searchContent neq null and searchContent neq '' ">
-              AND CONTENT LIKE '%${searchContent}%'
+              AND content LIKE '%${searchContent}%'
             </if>
           </when>
         </choose>
       </if>
     </trim>
-    LIMIT #{pagination.limitStart}, #{recordSize}
+    <bind name="limitStart" value="(page-1) * recordSize" />
+    LIMIT #{limitStart}, #{recordSize}
   </select>
   <update id="updateBoard">
-    UPDATE BOARD
-    SET TITLE=COALESCE(#{title},TITLE), CONTENT=COALESCE(#{content},CONTENT)
-    WHERE BOARD_ID = #{boardId}
+    UPDATE board
+    SET title=COALESCE(#{title},title), content=COALESCE(#{content},content)
+    WHERE board_id = #{boardId}
   </update>
   <delete id="deleteBoard">
     DELETE
-    FROM BOARD
-    WHERE BOARD_ID = #{boardId}
+    FROM board
+    WHERE board_id = #{boardId}
   </delete>
 </mapper>
     

@@ -43,8 +43,8 @@ public class BoardServiceImpl implements BoardService {
         }
 
         int count = boardRepository.count(pagingRequestData);
-        Pagination<Board> pagination = new Pagination(count, pagingRequestData);
-        pagingRequestData.setPagination(pagination);
+        Pagination<Board> pagination = new Pagination(count);
+        //pagingRequestData.setPagination(pagination);
         List<Board> list = boardRepository.findBoardBySearchWord(pagingRequestData);
         pagination.setList(list);
         //return new PagingResponseData<>(list, pagination);

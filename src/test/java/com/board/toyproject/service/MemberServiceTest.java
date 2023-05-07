@@ -45,7 +45,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("중복가입 테스트")
-    void memberDuplicateJoin(){
+    void memberDuplicateJoin() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
@@ -54,15 +54,15 @@ class MemberServiceTest {
         //when
         //memberService.join(member2);
         //then
-        assertThrows(DuplicateKeyException.class, ()->  memberService.join(member2));
+        assertThrows(DuplicateKeyException.class, () -> memberService.join(member2));
 
     }
 
     @Test
     @DisplayName("멤버10건 페이징 테스트")
-    public void findAllMember(){
-        for(int i=0; i<20; i++){
-            Member member = new Member("memberIdTest"+i, "테스트 멤버명"+i);
+    public void findAllMember() {
+        for (int i = 0; i < 20; i++) {
+            Member member = new Member("memberIdTest" + i, "테스트 멤버명" + i);
             memberService.join(member);
         }
         //PagingRequestData 생성
@@ -74,11 +74,13 @@ class MemberServiceTest {
         //then
         assertThat(responseData.getList().size()).isEqualTo(10);
     }
+
     @Test
-    @DisplayName("멤버16건에 대한 페이징 테스트")
-    public void find16Member(){
-        for(int i=0; i<16; i++){
-            Member member = new Member("memberIdTest"+(i+1), "테스트 멤버명"+(i+1));
+    @DisplayName("멤버6건에 대한 페이징 테스트")
+    public void find16Member() {
+        final int record_size = 3;
+        for (int i = 0; i < 6; i++) {
+            Member member = new Member("memberIdTest" + (i + 1), "테스트 멤버명" + (i + 1));
             memberService.join(member);
         }
         //PagingRequestData 생성
@@ -87,57 +89,37 @@ class MemberServiceTest {
         pagingRequestData.setSearchType("MEMBER_ID");
         pagingRequestData.setSearchContent("memberIdTest");
         pagingRequestData.setPage(1);
-        pagingRequestData.setRecordSize(10);
+        pagingRequestData.setRecordSize(record_size);
         pagingRequestData.setOrderBy("MEMBER_ID");
         //when
         Pagination<Member> responseData = memberService.findMemberBySearchWord(pagingRequestData);
         //then
-        assertThat(responseData.getList().size()).isEqualTo(10);
+        assertThat(responseData.getList().size()).isEqualTo(3);
 
-        Member member1 = responseData.getList().get(0);
-        Member member2 = responseData.getList().get(1);
-        Member member3 = responseData.getList().get(2);
-        Member member4 = responseData.getList().get(3);
-        Member member5 = responseData.getList().get(4);
-        Member member6 = responseData.getList().get(5);
-        Member member7 = responseData.getList().get(6);
-        Member member8 = responseData.getList().get(7);
-        Member member9 = responseData.getList().get(8);
-        Member member10 = responseData.getList().get(9);
-        assertThat(member1.getMemberId()).isEqualTo("memberIdTest1");
-        assertThat(member2.getMemberId()).isEqualTo("memberIdTest10");
-        assertThat(member3.getMemberId()).isEqualTo("memberIdTest11");
-        assertThat(member4.getMemberId()).isEqualTo("memberIdTest12");
-        assertThat(member5.getMemberId()).isEqualTo("memberIdTest13");
-        assertThat(member6.getMemberId()).isEqualTo("memberIdTest14");
-        assertThat(member7.getMemberId()).isEqualTo("memberIdTest15");
-        assertThat(member8.getMemberId()).isEqualTo("memberIdTest16");
-        assertThat(member9.getMemberId()).isEqualTo("memberIdTest2");
-        assertThat(member10.getMemberId()).isEqualTo("memberIdTest3");
+        for (int i = 0; i < responseData.getList().size(); i++) {
+            Member getMember = responseData.getList().get(i);
+            assertThat(getMember.getMemberId()).isEqualTo("memberIdTest" + (i + 1));
+        }
 
         //given2
+
         pagingRequestData.setPage(2);
-        pagingRequestData.setRecordSize(10);
+        pagingRequestData.setRecordSize(record_size);
 
         //when2
         Pagination<Member> responseData2 = memberService.findMemberBySearchWord(pagingRequestData);
 
         //then2
-        assertThat(responseData2.getList().size()).isEqualTo(6);
+        assertThat(responseData2.getList().size()).isEqualTo(3);
 
-        Member member11 = responseData2.getList().get(0);
-        Member member12 = responseData2.getList().get(1);
-        Member member13 = responseData2.getList().get(2);
-        Member member14 = responseData2.getList().get(3);
-        Member member15 = responseData2.getList().get(4);
-        Member member16 = responseData2.getList().get(5);
-        assertThat(member11.getMemberId()).isEqualTo("memberIdTest4");
-        assertThat(member12.getMemberId()).isEqualTo("memberIdTest5");
-        assertThat(member13.getMemberId()).isEqualTo("memberIdTest6");
-        assertThat(member14.getMemberId()).isEqualTo("memberIdTest7");
-        assertThat(member15.getMemberId()).isEqualTo("memberIdTest8");
-        assertThat(member16.getMemberId()).isEqualTo("memberIdTest9");
+        for (int i = 0; i < responseData2.getList().size(); i++) {
+            Member getMember = responseData2.getList().get(i);
+            assertThat(getMember.getMemberId()).isEqualTo("memberIdTest" + (i + 1 + record_size));
+        }
+
+
     }
+
     @Test
     void memberUpdate() {
 
