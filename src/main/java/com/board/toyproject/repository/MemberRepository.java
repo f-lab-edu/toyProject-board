@@ -2,6 +2,7 @@ package com.board.toyproject.repository;
 
 import com.board.toyproject.domain.Member;
 
+import com.board.toyproject.domain.paging.PagingRequestData;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +12,9 @@ public interface MemberRepository {
 
     Optional<Member> findById(String memberId);
 
-    List<Member> findByName(String name);
+    List<Member> findMemberBySearchWord(PagingRequestData pagingRequestData);
 
-    List<Member> findAll();
+    int memberCount(PagingRequestData pagingRequestData);
 
     int deleteMember(Member member);
 

@@ -1,20 +1,20 @@
 package com.board.toyproject.service;
 
-import com.board.toyproject.SpringConfig;
 import com.board.toyproject.domain.Member;
-import com.board.toyproject.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import com.board.toyproject.domain.paging.Pagination;
+import com.board.toyproject.domain.paging.PagingRequestData;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,21 +45,84 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("중복가입 테스트")
-    void memberDuplicateJoin(){
+    void memberDuplicateJoin() {
         //given
         Member member = new Member("test11", "유연");
         memberService.join(member);
         Member member2 = new Member("test11", "유연중복");
 
         //when
-        memberService.join(member2);
+        //memberService.join(member2);
         //then
+        assertThrows(DuplicateKeyException.class, () -> memberService.join(member2));
+
+    }
+
+    @Test
+    @DisplayName("멤버10건 페이징 테스트")
+    public void findAllMember() {
+        for (int i = 0; i < 20; i++) {
+            Member member = new Member("memberIdTest" + i, "테스트 멤버명" + i);
+            memberService.join(member);
+        }
+        //PagingRequestData 생성
+        PagingRequestData pagingRequestData = new PagingRequestData();
+
+        //when
+        Pagination<Member> responseData = memberService.findMemberBySearchWord(pagingRequestData);
+
+        //then
+        assertThat(responseData.getList().size()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("멤버6건에 대한 페이징 테스트")
+    public void find16Member() {
+        final int record_size = 3;
+        for (int i = 0; i < 6; i++) {
+            Member member = new Member("memberIdTest" + (i + 1), "테스트 멤버명" + (i + 1));
+            memberService.join(member);
+        }
+        //PagingRequestData 생성
+        PagingRequestData pagingRequestData = new PagingRequestData();
+
+        pagingRequestData.setSearchType("MEMBER_ID");
+        pagingRequestData.setSearchContent("memberIdTest");
+        pagingRequestData.setPage(1);
+        pagingRequestData.setRecordSize(record_size);
+        pagingRequestData.setOrderBy("MEMBER_ID");
+        //when
+        Pagination<Member> responseData = memberService.findMemberBySearchWord(pagingRequestData);
+        //then
+        assertThat(responseData.getList().size()).isEqualTo(3);
+
+        for (int i = 0; i < responseData.getList().size(); i++) {
+            Member getMember = responseData.getList().get(i);
+            assertThat(getMember.getMemberId()).isEqualTo("memberIdTest" + (i + 1));
+        }
+
+        //given2
+
+        pagingRequestData.setPage(2);
+        pagingRequestData.setRecordSize(record_size);
+
+        //when2
+        Pagination<Member> responseData2 = memberService.findMemberBySearchWord(pagingRequestData);
+
+        //then2
+        assertThat(responseData2.getList().size()).isEqualTo(3);
+
+        for (int i = 0; i < responseData2.getList().size(); i++) {
+            Member getMember = responseData2.getList().get(i);
+            assertThat(getMember.getMemberId()).isEqualTo("memberIdTest" + (i + 1 + record_size));
+        }
 
 
     }
 
     @Test
     void memberUpdate() {
+
         //given
         Member member = new Member();
         member.setMemberId("testId123");

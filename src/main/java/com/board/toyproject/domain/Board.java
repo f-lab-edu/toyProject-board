@@ -1,60 +1,25 @@
 package com.board.toyproject.domain;
 
+import javax.validation.constraints.NotEmpty;
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Board {
 
-    String boardId;
+    int boardId;
+    @NonNull
+    @NotEmpty(message = "memberId는 필수 값입니다.")
     String memberId;
+
+    @NonNull
+    @NotEmpty(message = "title은 필수 값입니다.")
     String title;
     String regDt;
     String modDt;
     String content;
-
-    public String getBoardId() {
-        return boardId;
-    }
-
-    public void setBoardId(String boardId) {
-        this.boardId = boardId;
-    }
-
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getRegDt() {
-        return regDt;
-    }
-
-    public void setRegDt(String regDt) {
-        this.regDt = regDt;
-    }
-
-    public String getModDt() {
-        return modDt;
-    }
-
-    public void setModDt(String modDt) {
-        this.modDt = modDt;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 
 }

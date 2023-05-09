@@ -1,43 +1,111 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.board.toyproject.repository.MybatisMemberRepository">
 
-    <resultMap id="memberMap" type="com.board.toyproject.domain.Member">
-        <result property="memberId" column="member_id"/>
-        <result property="name"     column="name"/>
-        <result property="phoneNum" column="phone_num"/>
-        <result property="regDt"    column="reg_dt"/>
-    </resultMap>
-    <insert id="saveMember">
-        insert into member (member_id, name, phone_num, reg_dt)
-        values (#{memberId},#{name},#{phoneNum}, now())
-    </insert>
-    <select id="findAll" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-        SELECT member_id, name, phone_num, reg_dt
-        FROM member
-    </select>
-    <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-        SELECT member_id, name, phone_num, reg_dt
-        FROM member
-        where member_id = #{memberId}
-    </select>
-    <select id="findByName" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-        SELECT member_id, name, phone_num, reg_dt
-        FROM member
-        where name = #{name}
-    </select>
-    <update id="updateMember" >
-        UPDATE MEMBER
-        SET  name=coalesce(#{name},name), phone_num=coalesce(#{phoneNum},phone_num)
-        where member_id = #{memberId}
-    </update>
-    <delete id="deleteMember" >
-        DELETE MEMBER
-        FROM member
-        where member_id = #{memberId}
-    </delete>
-
+  <resultMap id="memberMap" type="com.board.toyproject.domain.Member">
+    <result property="memberId" column="member_id"/>
+    <result property="name" column="name"/>
+    <result property="phoneNum" column="phone_num"/>
+    <result property="regDt" column="reg_dt"/>
+  </resultMap>
+  <insert id="saveMember">
+    INSERT INTO member (member_id, name, phone_num, reg_dt)
+    VALUES (#{memberId},#{name},#{phoneNum}, now())
+  </insert>
+  <select id="memberCount"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="int" >
+    SELECT COUNT(member_id)
+    FROM member
+    <trim prefix="where" prefixOverrides="AND">
+      <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND member_id LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND member_id LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'NAME'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND name LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND name LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'PHONE_NUM'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND phone_num LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND phone_num LIKE '%${searchContent}%'
+          </if>
+        </when>
+      </choose>
+    </trim>
+  </select>
+  <select id="findMemberBySearchWord"  parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+    SELECT member_id, name, phone_num, reg_dt
+    FROM member
+    <trim prefix="WHERE" prefixOverrides="AND">
+      <choose>
+        <when test="searchType eq 'MEMBER_ID'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND member_id LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND member_id LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'NAME'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND name LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND name LIKE '%${searchContent}%'
+          </if>
+        </when>
+        <when test="searchType eq 'PHONE_NUM'.toString()">
+          <if test="searchContent eq null and searchContent eq '' ">
+            AND phone_num LIKE ''
+          </if>
+          <if test="searchContent neq null and searchContent neq '' ">
+            AND phone_num LIKE '%${searchContent}%'
+          </if>
+        </when>
+      </choose>
+    </trim>
+    <trim prefix="ORDER BY">
+    <if test="orderBy neq null and orderBy neq ''">
+      ${orderBy}
+    </if>
+    </trim>
+    <bind name="limitStart" value="(page-1) * recordSize" />
+    LIMIT #{limitStart}, #{recordSize}
+  </select>
+  <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+    SELECT member_id, name, phone_num, reg_dt
+    FROM member
+    WHERE member_id = #{memberId}
+  </select>
+<!--  <select id="findByName" parameterType="com.board.toyproject.domain.paging.PagingRequestData" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
+    SELECT MEMBER_ID, NAME, PHONE_NUM, REG_DT
+    FROM MEMBER
+    WHERE NAME LIKE '%${searchContent}%'
+    LIMIT #{pagination.limitStart}, #{recordSize}
+  </select>-->
+  <update id="updateMember">
+    UPDATE member
+    SET name=COALESCE(#{name},name), phone_num=COALESCE(#{phoneNum},phone_num)
+    WHERE member_id = #{memberId}
+  </update>
+  <delete id="deleteMember">
+    DELETE
+    FROM member
+    WHERE member_id = #{memberId}
+  </delete>
 
 
 </mapper>

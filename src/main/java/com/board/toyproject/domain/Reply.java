@@ -1,6 +1,7 @@
 package com.board.toyproject.domain;
 
 public class Reply {
+
     String replyId;
     String memberId;
     String boardId;
@@ -31,7 +32,6 @@ public class Reply {
     public void setBoardId(String boardId) {
         this.boardId = boardId;
     }
-
 
 
     public String getRegDt() {

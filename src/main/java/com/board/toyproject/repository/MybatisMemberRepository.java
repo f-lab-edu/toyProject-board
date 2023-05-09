@@ -1,6 +1,7 @@
 package com.board.toyproject.repository;
 
 import com.board.toyproject.domain.Member;
+import com.board.toyproject.domain.paging.PagingRequestData;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,10 +17,10 @@ public interface MybatisMemberRepository extends MemberRepository {
     Optional<Member> findById(String memberId);
 
     @Override
-    List<Member> findByName(String name);
+    List<Member> findMemberBySearchWord(PagingRequestData pagingRequestData);
 
     @Override
-    List<Member> findAll();
+    int memberCount(PagingRequestData pagingRequestData);
 
     @Override
     int deleteMember(Member member);
