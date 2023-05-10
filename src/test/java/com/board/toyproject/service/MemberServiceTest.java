@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.security.sasl.AuthenticationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,9 @@ class MemberServiceTest {
     @DisplayName("중복가입 테스트")
     void memberDuplicateJoin() {
         //given
-        Member member = new Member("test11", "유연");
+        Member member = new Member("test11","password123", "유연");
         memberService.join(member);
-        Member member2 = new Member("test11", "유연중복");
+        Member member2 = new Member("test11","password123", "유연중복");
 
         //when
         //memberService.join(member2);
@@ -62,7 +63,7 @@ class MemberServiceTest {
     @DisplayName("멤버10건 페이징 테스트")
     public void findAllMember() {
         for (int i = 0; i < 20; i++) {
-            Member member = new Member("memberIdTest" + i, "테스트 멤버명" + i);
+            Member member = new Member("memberIdTest" + i,"password123", "테스트 멤버명" + i);
             memberService.join(member);
         }
         //PagingRequestData 생성
@@ -80,7 +81,7 @@ class MemberServiceTest {
     public void find16Member() {
         final int record_size = 3;
         for (int i = 0; i < 6; i++) {
-            Member member = new Member("memberIdTest" + (i + 1), "테스트 멤버명" + (i + 1));
+            Member member = new Member("memberIdTest" + (i + 1),"password123", "테스트 멤버명" + (i + 1));
             memberService.join(member);
         }
         //PagingRequestData 생성
@@ -156,5 +157,38 @@ class MemberServiceTest {
         assertThrows(NoSuchElementException.class,
                 () -> memberService.findByMemberId("testId123").get());
         //assertThat("이름수정합니다").isEqualTo(updateMember.getName());
+    }
+    @Test
+    @DisplayName("로그인 처리 전 아이디, 패스워드 검증-OK")
+    void login() throws AuthenticationException {
+        //given
+        Member member = new Member();
+        member.setMemberId("testId123");
+        member.setName("이름이름");
+        member.setPhoneNum("112233");
+        member.setPassword("112233");
+        memberService.join(member); //일단 가입
+
+        //when
+        Member getMember = memberService.login(member);
+        //then
+        assertThat(getMember.getPassword()).isEqualTo(member.getPassword());
+    }
+    @Test
+    @DisplayName("로그인 처리 전 아이디, 패스워드 검증-비밀번호 불일치 할 때")
+    void loginError() throws AuthenticationException {
+        //given
+        Member member = new Member();
+        member.setMemberId("testId123");
+        member.setName("이름이름");
+        member.setPhoneNum("112233");
+        memberService.join(member); //일단 가입
+
+        //when
+        member.setPassword("1111111");
+
+        //then
+        assertThrows(AuthenticationException.class,
+                () -> memberService.login(member));
     }
 }

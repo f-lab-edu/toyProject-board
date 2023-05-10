@@ -9,10 +9,11 @@
     <result property="name" column="name"/>
     <result property="phoneNum" column="phone_num"/>
     <result property="regDt" column="reg_dt"/>
+    <result property="password" column="password"/>
   </resultMap>
   <insert id="saveMember">
-    INSERT INTO member (member_id, name, phone_num, reg_dt)
-    VALUES (#{memberId},#{name},#{phoneNum}, now())
+    INSERT INTO member (member_id, password, name, phone_num, reg_dt)
+    VALUES (#{memberId}, #{password}, #{name}, #{phoneNum}, now())
   </insert>
   <select id="memberCount" parameterType="com.board.toyproject.domain.paging.PagingRequestData"
     resultType="int">
@@ -50,7 +51,7 @@
   <select id="findMemberBySearchWord"
     parameterType="com.board.toyproject.domain.paging.PagingRequestData"
     resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT member_id, name, phone_num, reg_dt
+    SELECT member_id, name, phone_num, reg_dt, password
     FROM member
     <trim prefix="WHERE" prefixOverrides="AND">
       <choose>
@@ -89,7 +90,7 @@
     LIMIT #{limitStart}, #{recordSize}
   </select>
   <select id="findById" resultType="com.board.toyproject.domain.Member" resultMap="memberMap">
-    SELECT member_id, name, phone_num, reg_dt
+    SELECT member_id, name, phone_num, reg_dt, password
     FROM member
     WHERE member_id = #{memberId}
   </select>

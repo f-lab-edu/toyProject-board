@@ -27,7 +27,8 @@ public class SessionController {
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PostMapping("/login")
-    public void login(@RequestBody @Valid Member member, BindingResult bindingResult, HttpServletRequest request)
+    public void login(@RequestBody @Valid Member member, BindingResult bindingResult,
+            HttpServletRequest request)
             throws AuthenticationException {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().toString());
