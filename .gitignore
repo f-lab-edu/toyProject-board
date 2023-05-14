@@ -31,8 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
-
-#docker
-db_data
 jenkins
+db_data
 redis
+
