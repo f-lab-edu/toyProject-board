@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#docker
+/db_data
+/jenkins
+/redis
