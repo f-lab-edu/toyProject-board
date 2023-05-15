@@ -6,6 +6,7 @@ import com.board.toyproject.domain.paging.Pagination;
 import com.board.toyproject.domain.paging.PagingRequestData;
 import com.board.toyproject.domain.paging.PagingRequestType;
 import com.board.toyproject.repository.MemberRepository;
+import javax.security.sasl.AuthenticationException;
 import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
@@ -39,7 +40,14 @@ public class MemberServiceImpl implements MemberService {
         return Optional.of(memberRepository.findById(memberId).orElseThrow(() ->
                 new NoSuchElementException("해당하는 member를 찾을 수 없습니다.")));
     }
-
+    @Override
+    public Member login(Member member) throws AuthenticationException {
+        Optional<Member> getMember = findByMemberId(member.getMemberId());
+        if (!member.getPassword().equals(getMember.get().getPassword())) {
+            throw new AuthenticationException("아이디 혹은 비밀번호가 틀렸습니다.");
+        }
+        return member;
+    }
     public Pagination<Member> findMemberBySearchWord(PagingRequestData pagingRequestData) {
         if (pagingRequestData.getSearchType() != null && pagingRequestData.getSearchType() != "") {
             if (PagingRequestType.isRequestType(pagingRequestData.getSearchType()) == false) { //올바른 요청 조건이 아니면
